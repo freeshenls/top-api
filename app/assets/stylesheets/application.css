@@ -8,3 +8,23 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+/* Fix for AMap AutoComplete results in Modals/Dialogs */
+.amap-sug-result {
+  z-index: 99999 !important;
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+  padding: 8px !important;
+}
+
+.amap-sug-result .auto-item {
+  padding: 10px 12px !important;
+  font-size: 13px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+}
+
+.amap-sug-result .auto-item:hover {
+  background-color: #f0f9ff !important;
+}

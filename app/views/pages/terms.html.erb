@@ -1,0 +1,100 @@
+<%# app/views/pages/terms.html.erb %>
+
+<div class="min-h-screen bg-slate-50 py-12 md:py-20">
+  <div class="container mx-auto px-4 max-w-4xl">
+    <!-- Header Section -->
+    <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-16 mb-8 relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-8 opacity-5">
+        <%= heroicon "document-text", variant: :solid, options: { class: "h-32 w-32 text-sky-600" } %>
+      </div>
+      
+      <div class="relative z-10">
+        <nav class="flex items-center gap-2 text-xs font-bold text-sky-600 uppercase tracking-widest mb-6">
+          <%= link_to "首页", root_path, class: "hover:text-sky-800" %>
+          <span class="text-slate-300">/</span>
+          <span>服务条款</span>
+        </nav>
+        
+        <h1 class="text-4xl md:text-5xl font-black text-slate-800 leading-tight mb-4">服务条款</h1>
+        <div class="flex items-center gap-3 text-slate-400 text-sm">
+          <%= heroicon "clock", variant: :outline, options: { class: "h-4 w-4" } %>
+          <span>更新时间: 2025年06月26日</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <article class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-16 prose prose-slate prose-sky max-w-none">
+      <div class="bg-sky-50 rounded-2xl p-6 border border-sky-100 mb-10">
+        <p class="text-sky-900 font-bold mb-0 flex items-center gap-2">
+          <%= heroicon "exclamation-triangle", variant: :solid, options: { class: "h-5 w-5" } %>
+          重要提示
+        </p>
+        <p class="text-sky-800 text-sm leading-relaxed mb-0 mt-2">
+          您继续使用本网站即表示您接受这些服务条款。请仔细阅读以下条款，以了解您在使用本站服务时的权利与义务。
+        </p>
+      </div>
+
+      <h3 class="text-2xl font-black text-slate-800 mt-12 mb-6">本站使用条款</h3>
+      <ul class="space-y-4 px-0 list-none">
+        <li class="flex items-start gap-4">
+          <div class="h-6 w-6 rounded-full bg-sky-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-[10px] font-bold text-sky-400">01</span>
+          </div>
+          <span class="text-slate-600">本网站仅供个人使用。</span>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="h-6 w-6 rounded-full bg-sky-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-[10px] font-bold text-sky-400">02</span>
+          </div>
+          <span class="text-slate-600">您只能在法律允许的情况下将我们的网站用作录音服务。</span>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="h-6 w-6 rounded-full bg-sky-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-[10px] font-bold text-sky-400">03</span>
+          </div>
+          <span class="text-slate-600 font-bold text-red-500 underline decoration-red-200">您不得使用我们的服务下载或转换任何受版权保护的资料。</span>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="h-6 w-6 rounded-full bg-sky-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-[10px] font-bold text-sky-400">04</span>
+          </div>
+          <span class="text-slate-600">您应对滥用这些服务以及使用本网站时可能发生的任何侵犯版权行为负全部责任。</span>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="h-6 w-6 rounded-full bg-sky-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-[10px] font-bold text-sky-400">05</span>
+          </div>
+          <span class="text-slate-600">您有责任阅读您下载 any 媒体的网站的服务条款，因为您使用我们的服务可能会违反 these 网站的服务条款。</span>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="h-6 w-6 rounded-full bg-sky-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-[10px] font-bold text-sky-400">06</span>
+          </div>
+          <span class="text-slate-600">对于滥用本网站提供的服务以及因使用这些服务而造成的任何损失，我们不承担任何责任。</span>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="h-6 w-6 rounded-full bg-sky-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-[10px] font-bold text-sky-400">07</span>
+          </div>
+          <span class="text-slate-600">我们保留随时修改这些条款的权利。</span>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="h-6 w-6 rounded-full bg-sky-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-[10px] font-bold text-sky-400">08</span>
+          </div>
+          <span class="text-slate-600">您继续使用本网站，即表示您接受这些服务条款。</span>
+        </li>
+      </ul>
+
+      <div class="mt-16 pt-8 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
+        <p class="text-slate-400 text-xs">© 2026 AI 领航 实战圈子. All rights reserved.</p>
+        <div class="flex items-center gap-6" data-controller="contact-dialog">
+          <%= link_to "隐私政策", privacy_path, class: "text-slate-400 hover:text-sky-600 text-xs font-bold transition-colors" %>
+          <button data-action="click->contact-dialog#open" class="text-slate-400 hover:text-sky-600 text-xs font-bold transition-colors cursor-pointer">联系我们</button>
+          <%= render "shared/contact_dialog" %>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>

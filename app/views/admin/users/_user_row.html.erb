@@ -1,0 +1,59 @@
+<tr class="hover:bg-slate-50 transition-colors group">
+  <td class="p-6">
+    <div class="flex items-center gap-3">
+      <div class="h-10 w-10 bg-sky-50 rounded-xl flex items-center justify-center font-bold text-sky-600">
+        <%= user.username[0].upcase %>
+      </div>
+      <div>
+        <p class="text-sm font-bold text-slate-800"><%= user.username %></p>
+        <p class="text-[10px] text-slate-400 font-mono tracking-tighter"><%= user.email %></p>
+      </div>
+    </div>
+  </td>
+  <td class="p-6 text-center">
+    <% if user.is_vip %>
+      <div class="inline-flex flex-col items-center gap-1">
+        <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-[10px] font-black ring-1 ring-amber-200">
+          <%= case user.vip_type
+              when 'monthly' then '月度会员'
+              when 'yearly' then '年度会员'
+              when 'lifetime' then '永久会员'
+              else '高级会员'
+              end %>
+        </span>
+      </div>
+    <% else %>
+      <span class="px-3 py-1 bg-slate-100 text-slate-400 rounded-full text-[10px] font-bold">
+        普通用户
+      </span>
+    <% end %>
+  </td>
+  <td class="p-6">
+    <%= form_with(model: user, url: admin_user_path(user), method: :patch, data: { turbo: false }, class: "flex items-center gap-2 justify-center") do |f| %>
+      <%= f.text_field :member_code, 
+          placeholder: "如 056", 
+          class: "w-24 bg-slate-50 border-slate-200 rounded-lg py-1.5 px-3 text-xs font-mono focus:ring-sky-500 focus:border-sky-500" %>
+      <button type="submit" class="p-1.5 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors shadow-sm cursor-pointer" title="保存会员码">
+          <%= heroicon "check", variant: :solid, options: { class: "h-3.5 w-3.5" } %>
+      </button>
+    <% end %>
+  </td>
+  <td class="p-6 text-right">
+    <div class="flex items-center justify-end gap-1.5">
+      <% if user.is_vip %>
+        <%= button_to toggle_vip_admin_user_path(user), method: :patch, data: { turbo: false },
+            class: "px-3 py-1.5 bg-slate-100 text-slate-500 rounded-lg text-[10px] font-bold hover:bg-red-50 hover:text-red-600 transition-all cursor-pointer" do %>
+          取消会员
+        <% end %>
+      <% end %>
+      
+      <% { monthly: '月度', yearly: '年度', lifetime: '永久' }.each do |type, label| %>
+        <% active = user.is_vip && user.vip_type == type.to_s %>
+        <%= button_to toggle_vip_admin_user_path(user, vip_type: type), method: :patch, data: { turbo: false },
+            class: "px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer #{active ? 'bg-amber-100 text-amber-700 ring-1 ring-amber-300' : 'bg-sky-50 text-sky-600 hover:bg-sky-100'}" do %>
+          <%= label %>
+        <% end %>
+      <% end %>
+    </div>
+  </td>
+</tr>

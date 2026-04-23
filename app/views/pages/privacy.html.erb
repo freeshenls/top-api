@@ -1,0 +1,85 @@
+<%# app/views/pages/privacy.html.erb %>
+
+<div class="min-h-screen bg-slate-50 py-12 md:py-20">
+  <div class="container mx-auto px-4 max-w-4xl">
+    <!-- Header Section -->
+    <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-16 mb-8 relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-8 opacity-5">
+        <%= heroicon "shield-check", variant: :solid, options: { class: "h-32 w-32 text-sky-600" } %>
+      </div>
+      
+      <div class="relative z-10">
+        <nav class="flex items-center gap-2 text-xs font-bold text-sky-600 uppercase tracking-widest mb-6">
+          <%= link_to "首页", root_path, class: "hover:text-sky-800" %>
+          <span class="text-slate-300">/</span>
+          <span>隐私政策</span>
+        </nav>
+        
+        <h1 class="text-4xl md:text-5xl font-black text-slate-800 leading-tight mb-4">隐私政策</h1>
+        <div class="flex items-center gap-3 text-slate-400 text-sm">
+          <%= heroicon "clock", variant: :outline, options: { class: "h-4 w-4" } %>
+          <span>更新时间: 2025年06月26日</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <article class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-16 prose prose-slate prose-sky max-w-none">
+      <div class="bg-sky-50 rounded-2xl p-6 border border-sky-100 mb-10">
+        <h3 class="text-sky-900 font-bold mt-0 flex items-center gap-2">
+          <%= heroicon "information-circle", variant: :solid, options: { class: "h-5 w-5" } %>
+          摘要
+        </h3>
+        <p class="text-sky-800 text-sm leading-relaxed mb-0">
+          您可以匿名使用本站，而无需提供任何个人信息，但和大多数网站一样，我们会收集网页浏览器和网络服务器可以提供的非个人识别信息，这些信息仅用于更好地了解访问者如何使用我们的网站。
+        </p>
+      </div>
+
+      <p>
+        我们还会收集可能涉及个人识别的信息，如您的IP地址（您电脑的互联网地址），目的是为了限制我们服务的使用，以防止滥用和确保我们的服务对所有人都可用。
+      </p>
+      
+      <p>
+        除非我们的服务运营需要，否则我们不会在我们的服务器上存储任何个人信息，并且通常只在短时间内存储，我们不会与任何人共享您的个人信息。
+      </p>
+
+      <h3 class="text-2xl font-black text-slate-800 mt-12 mb-6">自动收集的信息</h3>
+      <p>在本站上收集并由我们使用的第三方服务使用的一些信息：</p>
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+        <li>IP地址</li>
+        <li>浏览器类型</li>
+        <li>每个请求的日期和时间</li>
+        <li>引荐站点</li>
+        <li>语言偏好</li>
+      </ul>
+      <p>为了提供我们的服务，这些信息会在短时间内临时存储在我们服务器上的日志文件中。</p>
+
+      <h3 class="text-2xl font-black text-slate-800 mt-12 mb-6">Cookies</h3>
+      <p>
+        Cookies是存储在您计算机上的文本文件，我们使用Cookies帮助我们提供良好体验、改善服务，并个性化可能在您使用网站时传递给您的广告和内容，我们还使用第三方服务，这些服务使用Cookies来收集流量数据和提供广告服务。
+      </p>
+      <p>
+        我们通过使用Google Analytics来收集网站访客的匿名使用信息，它可能会使用跟踪Cookies来收集匿名的浏览器、操作系统、地理位置和网站导航信息。
+      </p>
+
+      <h3 class="text-2xl font-black text-slate-800 mt-12 mb-6">链接</h3>
+      <p>
+        本网站可能含有指向其他网站的链接，请注意，我们对此类网站的内容或隐私不承担任何责任，我们鼓励您阅读任何其他收集个人身份信息的网站的隐私政策。
+      </p>
+
+      <h3 class="text-2xl font-black text-slate-800 mt-12 mb-6">隐私政策变更</h3>
+      <p>
+        本站可能会在必要时更改其隐私政策，任何重大更改都会在主页上明确发布通知，最后更新日期将显示在页面顶部。本隐私政策发生任何变更后，您继续使用本网站即表示您接受此类变更。
+      </p>
+
+      <div class="mt-16 pt-8 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
+        <p class="text-slate-400 text-xs">© 2026 AI 领航 实战圈子. All rights reserved.</p>
+        <div class="flex items-center gap-6" data-controller="contact-dialog">
+          <%= link_to "隐私政策", privacy_path, class: "text-slate-400 hover:text-amber-600 text-xs font-bold transition-colors" %>
+          <button data-action="click->contact-dialog#open" class="text-slate-400 hover:text-amber-600 text-xs font-bold transition-colors cursor-pointer">联系我们</button>
+          <%= render "shared/contact_dialog" %>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>

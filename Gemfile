@@ -65,3 +65,5 @@ gem "groupdate"
 gem "aws-sdk-s3"
 gem "caxlsx_rails"
 gem "activerecord-postgis-adapter"
+
+gem "rucaptcha", "~> 3.4"

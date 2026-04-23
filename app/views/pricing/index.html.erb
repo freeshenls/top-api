@@ -1,0 +1,199 @@
+<%# app/views/pricing/index.html.erb %>
+
+<div class="min-h-screen bg-slate-50">
+  <!-- 顶部导航栏 -->
+  <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      <%= link_to root_path, class: "flex items-center gap-3" do %>
+        <div class="h-9 w-9 bg-gradient-to-br from-[#0EA5E9] to-[#0369A1] rounded-xl flex items-center justify-center shadow-lg shadow-sky-200 flex-shrink-0">
+          <%= image_tag asset_path('logo.svg'), class: "h-5 w-5 brightness-0 invert", alt: "Logo" %>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-sm font-bold text-slate-800 leading-tight">AI 领航</span>
+          <span class="text-[8px] text-sky-500 font-bold tracking-widest uppercase">实战圈子</span>
+        </div>
+      <% end %>
+      <div class="flex items-center gap-4">
+        <%= link_to "返回首页", root_path, class: "text-sm text-slate-500 hover:text-sky-600 font-medium transition-colors" %>
+        <% if user_signed_in? %>
+          <div class="flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full border border-slate-200">
+            <div class="h-6 w-6 bg-sky-500 rounded-full flex items-center justify-center text-[10px] text-white font-bold"><%= current_user.username[0].upcase %></div>
+            <span class="text-xs font-bold text-slate-700"><%= current_user.username %></span>
+          </div>
+        <% else %>
+          <%= link_to "登录", new_user_session_path, 
+              class: "text-sm font-bold text-sky-600",
+              data: { action: "click->dialog#open", turbo_frame: "auth_frame" } %>
+        <% end %>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-b from-sky-50 to-white pt-16 pb-12 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight">会员套餐</h1>
+      <p class="text-slate-500 text-lg md:text-xl font-medium">开通会员，解锁全站 AI 工具与精品课程</p>
+    </div>
+  </div>
+
+  <!-- Pricing Cards -->
+  <div class="max-w-6xl mx-auto px-4 -mt-4 mb-20">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- 月度会员 -->
+      <div class="bg-white rounded-[2.5rem] p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all group relative flex flex-col">
+        <h3 class="text-xl font-black text-slate-800 mb-6">月度会员</h3>
+        <div class="flex items-baseline gap-1 mb-8">
+          <span class="text-2xl font-bold text-slate-900">¥</span>
+          <span class="text-5xl font-black text-slate-900">45</span>
+          <span class="text-slate-400 text-sm font-bold">/ 月</span>
+        </div>
+        <ul class="space-y-4 mb-10 flex-1">
+          <% ['全站工具无限制使用', '优先响应支持', '解锁基础 AI 教程'].each do |item| %>
+            <li class="flex items-center gap-3 text-sm text-slate-600">
+              <%= heroicon "check-circle", variant: :solid, options: { class: "h-5 w-5 text-sky-500" } %>
+              <%= item %>
+            </li>
+          <% end %>
+        </ul>
+        <button data-action="click->contact-dialog#open" class="w-full py-4 bg-slate-100 text-slate-900 rounded-2xl font-black text-sm hover:bg-slate-200 transition-colors">立即开通</button>
+      </div>
+
+      <!-- 年度会员 (推荐) -->
+      <div class="bg-white rounded-[2.5rem] p-8 border-2 border-sky-600 shadow-2xl shadow-sky-100 transition-all scale-105 relative z-10 flex flex-col">
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-sky-500 to-sky-700 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg shadow-sky-200">
+          最受欢迎
+        </div>
+        <h3 class="text-xl font-black text-slate-800 mb-6 text-center">年度会员</h3>
+        <div class="flex items-baseline justify-center gap-1 mb-8">
+          <span class="text-2xl font-bold text-sky-600">¥</span>
+          <span class="text-5xl font-black text-sky-600">188</span>
+          <span class="text-slate-400 text-sm font-bold">/ 年</span>
+        </div>
+        <ul class="space-y-4 mb-10 flex-1">
+          <% ['包含月度所有权益', '批量处理功能', '专属大咖交流群', '解锁全部精品课程'].each do |item| %>
+            <li class="flex items-center gap-3 text-sm text-slate-600 font-bold">
+              <%= heroicon "check-circle", variant: :solid, options: { class: "h-5 w-5 text-sky-500" } %>
+              <%= item %>
+            </li>
+          <% end %>
+        </ul>
+        <button data-action="click->contact-dialog#open" class="w-full py-4 bg-gradient-to-r from-sky-500 to-sky-700 text-white rounded-2xl font-black text-sm shadow-xl shadow-sky-200 hover:brightness-110 transition-all active:scale-95">立即开通</button>
+      </div>
+
+      <!-- 永久会员 -->
+      <div class="bg-white rounded-[2.5rem] p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all group relative flex flex-col">
+        <div class="absolute top-4 right-4 text-amber-500 animate-pulse">
+          <%= heroicon "sparkles", variant: :solid, options: { class: "h-6 w-6" } %>
+        </div>
+        <h3 class="text-xl font-black text-slate-800 mb-6">永久会员</h3>
+        <div class="flex items-baseline gap-1 mb-8">
+          <span class="text-2xl font-bold text-slate-900">¥</span>
+          <span class="text-5xl font-black text-slate-900">499</span>
+        </div>
+        <ul class="space-y-4 mb-10 flex-1">
+          <% ['终身免费更新', '最高优先权服务', '全平台客户端通用', '永久社群资源对接'].each do |item| %>
+            <li class="flex items-center gap-3 text-sm text-slate-600">
+              <%= heroicon "check-circle", variant: :solid, options: { class: "h-5 w-5 text-amber-500" } %>
+              <%= item %>
+            </li>
+          <% end %>
+        </ul>
+        <button data-action="click->contact-dialog#open" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm hover:bg-slate-800 transition-colors">立即开通</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 权益对比表 -->
+  <section class="max-w-5xl mx-auto px-4 mb-24 pb-20">
+    <% 
+      render_status = ->(val) {
+        if val == true
+          heroicon "check-badge", variant: :solid, options: { class: "h-6 w-6 text-sky-500 mx-auto" }
+        elsif val == false
+          heroicon "x-mark", variant: :outline, options: { class: "h-5 w-5 text-red-300 mx-auto" }
+        else
+          tag.span val, class: "text-[10px] text-slate-400 font-black uppercase tracking-wider"
+        end
+      }
+    %>
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-black text-slate-800">权益详细对比</h2>
+      <p class="text-slate-400 mt-2 text-sm font-medium">选择最适合您的方案</p>
+    </div>
+    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-slate-50 border-b border-slate-100">
+            <th class="p-6 text-sm font-black text-slate-800">权益功能</th>
+            <th class="p-6 text-center text-sm font-black text-slate-400">免费用户</th>
+            <th class="p-6 text-center text-sm font-black text-sky-400">月度会员</th>
+            <th class="p-6 text-center text-sm font-black text-sky-600">年度/永久</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-50">
+          <% [
+            { name: 'AI 工具无限制使用', free: false, monthly: true, annual: true },
+            { name: '批量处理功能', free: false, monthly: false, annual: true },
+            { name: 'AI 教程学院 (基础)', free: '部分', monthly: '全部', annual: '全部' },
+            { name: 'AI 精品推荐课程', free: false, monthly: false, annual: true },
+            { name: '专属大咖交流群', free: false, monthly: false, annual: true },
+            { name: '优先响应支持', free: false, monthly: true, annual: '最高优先' },
+            { name: '全平台客户端通用', free: false, monthly: false, annual: '永久会员专属' }
+          ].each do |row| %>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="p-6 text-sm font-bold text-slate-700"><%= row[:name] %></td>
+              <td class="p-6 text-center">
+                <%= render_status.call(row[:free]) %>
+              </td>
+              <td class="p-6 text-center">
+                <%= render_status.call(row[:monthly]) %>
+              </td>
+              <td class="p-6 text-center">
+                <%= render_status.call(row[:annual]) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 联系客服弹窗 (Stimulus Component Dialog) -->
+  <dialog data-controller="contact-dialog" data-contact-dialog-target="dialog" class="m-auto backdrop:bg-slate-900/50 backdrop:backdrop-blur-sm p-0 rounded-[2.5rem] shadow-2xl border-none animate-in fade-in zoom-in duration-300 overflow-hidden">
+    <div class="w-full max-w-[400px] bg-white overflow-hidden">
+      <div class="relative p-8 text-center">
+        <button data-action="click->contact-dialog#close" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-all">
+          <%= heroicon "x-mark", variant: :solid, options: { class: "h-5 w-5" } %>
+        </button>
+
+        <div class="mb-6 mt-4">
+          <div class="h-16 w-16 bg-sky-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <%= heroicon "chat-bubble-left-right", variant: :solid, options: { class: "h-8 w-8 text-sky-500" } %>
+          </div>
+          <h3 class="text-xl font-black text-slate-800">联系客服开通</h3>
+          <p class="text-slate-400 text-xs mt-2 font-medium">请扫描下方二维码，添加客服微信开通会员</p>
+        </div>
+
+        <div class="bg-slate-50 p-6 rounded-3xl mb-6 flex justify-center">
+          <div class="h-48 w-48 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
+             <%= image_tag asset_path('qr_code.png'), class: "h-full w-full object-contain" %>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex items-center justify-center gap-2 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+            <span class="h-1 w-1 bg-sky-400 rounded-full"></span>
+            <span>人工审核 · 即时开通</span>
+            <span class="h-1 w-1 bg-sky-400 rounded-full"></span>
+          </div>
+          <button data-action="click->contact-dialog#close" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm hover:bg-slate-800 transition-colors">
+            我知道了
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+</div>

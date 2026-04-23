@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AI 领航 | 管理后台</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "application", "data-turbo-track": "reload" %>
+    <link rel="icon" href="<%= asset_path('logo.svg') %>" type="image/svg+xml">
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-slate-50 font-sans antialiased text-slate-900">
+    <div class="min-h-screen flex">
+      <!-- 侧边栏 -->
+      <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col sticky top-0 h-screen">
+        <div class="p-6 flex items-center gap-3 border-b border-slate-800">
+          <div class="h-8 w-8 bg-gradient-to-br from-[#0EA5E9] to-[#0369A1] rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
+            <%= image_tag asset_path('logo.svg'), class: "h-5 w-5 brightness-0 invert", alt: "Logo" %>
+          </div>
+          <span class="font-bold text-white tracking-tight">AI 领航</span>
+        </div>
+
+        <nav class="flex-1 p-4 space-y-1">
+          <%= link_to admin_root_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'dashboard' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
+            <%= heroicon "chart-pie", variant: :outline, options: { class: "h-5 w-5" } %>
+            <span class="text-sm font-medium">概览仪表盘</span>
+          <% end %>
+
+          <%= link_to admin_users_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'users' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
+            <%= heroicon "users", variant: :outline, options: { class: "h-5 w-5" } %>
+            <span class="text-sm font-medium">用户管理</span>
+          <% end %>
+
+          <div class="h-px bg-slate-800 my-4 mx-2"></div>
+          <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">内容管理</p>
+
+          <%= link_to admin_carousel_items_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'carousel_items' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
+            <%= heroicon "photo", variant: :outline, options: { class: "h-5 w-5" } %>
+            <span class="text-sm font-medium">首页轮播</span>
+          <% end %>
+
+          <%= link_to admin_posts_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'posts' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
+            <%= heroicon "megaphone", variant: :outline, options: { class: "h-5 w-5" } %>
+            <span class="text-sm font-medium">最新动态</span>
+          <% end %>
+
+          <%= link_to admin_activities_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'activities' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
+            <%= heroicon "calendar-days", variant: :outline, options: { class: "h-5 w-5" } %>
+            <span class="text-sm font-medium">线下活动</span>
+          <% end %>
+
+          <div class="h-px bg-slate-800 my-4 mx-2"></div>
+          <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">导航系统管理</p>
+
+          <%= link_to admin_categories_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'categories' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
+            <%= heroicon "squares-2x2", variant: :outline, options: { class: "h-5 w-5" } %>
+            <span class="text-sm font-medium">导航分类管理</span>
+          <% end %>
+
+          <%= link_to admin_sites_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'sites' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
+            <%= heroicon "globe-alt", variant: :outline, options: { class: "h-5 w-5" } %>
+            <span class="text-sm font-medium">导航站点管理</span>
+          <% end %>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800">
+          <%= link_to root_path, class: "flex items-center gap-3 px-4 py-2 text-xs font-medium text-slate-500 hover:text-white transition-colors" do %>
+            <%= heroicon "arrow-left-start-on-rectangle", variant: :outline, options: { class: "h-4 w-4" } %>
+            返回前台
+          <% end %>
+        </div>
+      </aside>
+
+      <!-- 主体内容 -->
+      <main class="flex-1 flex flex-col min-w-0">
+        <!-- 顶部通栏 -->
+        <header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+          <% 
+            controller_titles = {
+              'dashboard' => '概览仪表盘',
+              'users' => '用户管理',
+              'carousel_items' => '首页轮播',
+              'posts' => '最新动态',
+              'activities' => '线下活动',
+              'categories' => '分类管理',
+              'sites' => '站点管理'
+            }
+          %>
+          <h2 class="text-sm font-bold text-slate-500 uppercase tracking-widest"><%= controller_titles[controller_name] || controller_name.humanize %></h2>
+          <div class="flex items-center gap-4">
+             <span class="text-xs font-bold text-slate-400">当前管理员: <%= current_user.username %></span>
+          </div>
+        </header>
+
+        <!-- 页面内容 -->
+        <div class="p-8 relative">
+          <% if notice %>
+            <div data-controller="notification"
+                 data-notification-delay-value="3000"
+                 class="fixed top-20 right-8 z-[100] transform transition-all duration-500 ease-in-out"
+                 data-transition-enter-from="opacity-0 translate-x-10"
+                 data-transition-enter-to="opacity-100 translate-x-0"
+                 data-transition-leave-from="opacity-100 translate-x-0"
+                 data-transition-leave-to="opacity-0 translate-x-10">
+              <div class="bg-emerald-50 border border-emerald-100 text-emerald-700 px-6 py-4 rounded-2xl shadow-xl shadow-emerald-500/10 flex items-center gap-3">
+                <div class="h-8 w-8 bg-emerald-500 rounded-full flex items-center justify-center text-white">
+                  <%= heroicon "check", variant: :solid, options: { class: "h-4 w-4" } %>
+                </div>
+                <div>
+                  <p class="font-bold text-sm">操作成功</p>
+                  <p class="text-xs text-emerald-600/80"><%= notice %></p>
+                </div>
+                <button data-action="notification#hide" class="ml-4 text-emerald-300 hover:text-emerald-500 transition-colors">
+                  <%= heroicon "x-mark", variant: :solid, options: { class: "h-4 w-4" } %>
+                </button>
+              </div>
+            </div>
+          <% end %>
+
+          <% if alert %>
+            <div data-controller="notification"
+                 data-notification-delay-value="3000"
+                 class="fixed top-20 right-8 z-[100] transform transition-all duration-500 ease-in-out">
+              <div class="bg-red-50 border border-red-100 text-red-700 px-6 py-4 rounded-2xl shadow-xl shadow-red-500/10 flex items-center gap-3">
+                <div class="h-8 w-8 bg-red-500 rounded-full flex items-center justify-center text-white text-xs">!</div>
+                <div>
+                  <p class="font-bold text-sm">提醒</p>
+                  <p class="text-xs text-red-600/80"><%= alert %></p>
+                </div>
+                <button data-action="notification#hide" class="ml-4 text-red-300 hover:text-red-500">
+                  <%= heroicon "x-mark", variant: :solid, options: { class: "h-4 w-4" } %>
+                </button>
+              </div>
+            </div>
+          <% end %>
+
+          <%= yield %>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

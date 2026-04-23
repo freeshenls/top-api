@@ -1,0 +1,45 @@
+<%# app/views/admin/sites/_form.html.erb %>
+
+<%= form_with(model: [:admin, site], class: "bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-10 space-y-8") do |f| %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="space-y-2">
+      <%= f.label :category_id, "所属分类", class: "text-sm font-bold text-slate-700 ml-1" %>
+      <%= f.collection_select :category_id, Category.all, :id, :name, { prompt: "请选择分类" }, { class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500" } %>
+    </div>
+    <div class="space-y-2">
+      <%= f.label :position, "显示顺序", class: "text-sm font-bold text-slate-700 ml-1" %>
+      <%= f.number_field :position, class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="space-y-2">
+      <%= f.label :name, "站点名称", class: "text-sm font-bold text-slate-700 ml-1" %>
+      <%= f.text_field :name, class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500", placeholder: "例如：ChatGPT" %>
+    </div>
+    <div class="space-y-2">
+      <%= f.label :url, "站点链接", class: "text-sm font-bold text-slate-700 ml-1" %>
+      <%= f.text_field :url, class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500", placeholder: "https://chat.openai.com" %>
+    </div>
+  </div>
+
+  <div class="space-y-2">
+    <%= f.label :description, "简短描述", class: "text-sm font-bold text-slate-700 ml-1" %>
+    <%= f.text_field :description, class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500", placeholder: "例如：全球领先的 AI 语言模型" %>
+  </div>
+
+  <div class="space-y-2">
+    <%= f.label :icon_url, "图标 URL", class: "text-sm font-bold text-slate-700 ml-1" %>
+    <%= f.text_field :icon_url, class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500", placeholder: "https://example.com/logo.png" %>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <%= f.check_box :active, class: "rounded text-sky-600 focus:ring-sky-500" %>
+    <%= f.label :active, "立即上线显示", class: "text-sm font-bold text-slate-700" %>
+  </div>
+
+  <div class="pt-4 flex gap-4">
+    <%= f.submit "提交保存", class: "px-8 py-3 bg-sky-600 text-white rounded-2xl text-sm font-bold shadow-lg shadow-sky-200 hover:bg-sky-700 transition-all cursor-pointer" %>
+    <%= link_to "返回列表", admin_sites_path, class: "px-8 py-3 bg-slate-100 text-slate-600 rounded-2xl text-sm font-bold hover:bg-slate-200 transition-all" %>
+  </div>
+<% end %>

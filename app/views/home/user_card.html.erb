@@ -1,0 +1,66 @@
+<%# app/views/home/user_card.html.erb %>
+
+<template data-popover-target="content">
+  <div class="z-50 w-64 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in duration-200">
+    <!-- 用户头部 -->
+    <div class="px-5 py-4 bg-slate-50/50 border-b border-slate-100">
+      <div class="flex items-center gap-3 text-left">
+        <div class="h-10 w-10 bg-sky-500 rounded-xl flex items-center justify-center text-white font-bold">
+          <%= current_user.username[0].upcase if current_user %>
+        </div>
+        <div class="flex flex-col min-w-0">
+          <strong class="block text-sm text-slate-800 truncate"><%= current_user.username if current_user %></strong>
+          <span class="block truncate text-[11px] font-medium text-slate-400"><%= current_user.email if current_user %></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 菜单列表 -->
+    <div class="py-2 text-left">
+      <%= link_to "#", class: "flex items-center justify-between px-5 py-3 text-sm text-slate-600 hover:bg-sky-50 hover:text-sky-600 transition-colors group" do %>
+        <div class="flex items-center gap-3">
+          <%= heroicon "bolt", variant: :outline, options: { class: "h-4 w-4 text-slate-400 group-hover:text-sky-500" } %>
+          <span>AI 积分</span>
+        </div>
+        <div class="flex items-center gap-1 font-mono font-bold text-sky-500 text-xs">
+          <span><%= current_user.ai_points if current_user %></span>
+          <%= heroicon "chevron-right", variant: :solid, options: { class: "h-3 w-3" } %>
+        </div>
+      <% end %>
+
+      <div class="h-px bg-slate-50 my-1 mx-4"></div>
+
+      <% [
+        { name: '个人中心', icon: 'user-circle', path: member_path(current_user || 1) },
+        { name: '分站管理', icon: 'squares-plus', path: '#' },
+        { name: '领取免费次数', icon: 'gift', path: '#' },
+        { name: '开发者管理', icon: 'code-bracket', path: '#' }
+      ].each do |item| %>
+        <%= link_to item[:path], class: "flex items-center gap-3 px-5 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-sky-600 transition-colors group" do %>
+          <%= heroicon item[:icon], variant: :outline, options: { class: "h-4 w-4 text-slate-400 group-hover:text-sky-500" } %>
+          <span><%= item[:name] %></span>
+        <% end %>
+      <% end %>
+
+      <div class="h-px bg-slate-50 my-1 mx-4"></div>
+
+      <% if current_user&.is_admin? %>
+        <%= link_to admin_root_path, class: "flex items-center gap-3 px-5 py-3 text-sm text-amber-600 hover:bg-amber-50 transition-colors group font-bold" do %>
+          <%= heroicon "cog-6-tooth", variant: :outline, options: { class: "h-4 w-4 text-amber-400" } %>
+          <span>进入管理后台</span>
+        <% end %>
+        <div class="h-px bg-slate-50 my-1 mx-4"></div>
+      <% end %>
+
+      <%= link_to "#", class: "flex items-center gap-3 px-5 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors group" do %>
+        <%= heroicon "key", variant: :outline, options: { class: "h-4 w-4 text-slate-400 group-hover:text-sky-500" } %>
+        <span>修改密码</span>
+      <% end %>
+
+      <%= button_to destroy_user_session_path, method: :delete, class: "w-full flex items-center gap-3 px-5 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors group" do %>
+        <%= heroicon "arrow-left-start-on-rectangle", variant: :outline, options: { class: "h-4 w-4 text-red-400 group-hover:text-red-500" } %>
+        <span>退出登录</span>
+      <% end %>
+    </div>
+  </div>
+</template>

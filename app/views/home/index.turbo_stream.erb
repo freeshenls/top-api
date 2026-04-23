@@ -1,0 +1,46 @@
+<% if params[:activities_page] %>
+  <%= turbo_stream.append "home_activities_list" do %>
+    <%= render partial: "activity_item", collection: @upcoming_activities, as: :activity %>
+  <% end %>
+  <% if @pagy_activities.next %>
+    <%= turbo_stream.replace "activities_scroll_trigger" do %>
+      <div id="activities_scroll_trigger" class="mt-4" data-controller="infinite-scroll">
+        <%= link_to "加载更多", root_path(activities_page: @pagy_activities.next), 
+            class: "hidden", data: { turbo_stream: true } %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= turbo_stream.remove "activities_scroll_trigger" %>
+  <% end %>
+
+<% elsif params[:posts_page] %>
+  <%= turbo_stream.append "home_posts_list" do %>
+    <%= render partial: "post_item", collection: @latest_posts, as: :post %>
+  <% end %>
+  <% if @pagy_posts.next %>
+    <%= turbo_stream.replace "posts_scroll_trigger" do %>
+      <div id="posts_scroll_trigger" class="mt-4" data-controller="infinite-scroll">
+        <%= link_to "加载更多", root_path(posts_page: @pagy_posts.next), 
+            class: "hidden", data: { turbo_stream: true } %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= turbo_stream.remove "posts_scroll_trigger" %>
+  <% end %>
+
+<% else %>
+  <%= turbo_stream.append "home_categories_list" do %>
+    <%= render partial: "category_section", collection: @categories, as: :category %>
+  <% end %>
+
+  <% if @pagy.next %>
+    <%= turbo_stream.replace "infinite_scroll_trigger" do %>
+      <div id="infinite_scroll_trigger" class="py-10" data-controller="infinite-scroll">
+        <%= link_to "加载更多", root_path(page: @pagy.next), 
+            class: "hidden", data: { turbo_stream: true } %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= turbo_stream.remove "infinite_scroll_trigger" %>
+  <% end %>
+<% end %>

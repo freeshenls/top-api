@@ -1,0 +1,59 @@
+<%# app/views/admin/sites/index.html.erb %>
+
+<div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+  <div>
+    <h2 class="text-2xl font-black text-slate-800 tracking-tight">导航站点管理</h2>
+    <p class="text-slate-400 text-sm mt-1">管理全站导航链接、图标、分类归属及显示顺序</p>
+  </div>
+  
+  <div class="flex items-center gap-4">
+    <%= form_with url: admin_sites_path, method: :get, class: "flex items-center gap-2", data: { turbo_frame: "admin_sites_list", turbo_action: "advance" } do |f| %>
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+          <%= heroicon "magnifying-glass", variant: :outline, options: { class: "h-4 w-4" } %>
+        </div>
+        <%= f.text_field :q, value: params[:q], placeholder: "搜索站点名称...", 
+            class: "bg-white border-slate-200 rounded-2xl py-2.5 pl-10 pr-4 text-sm w-64 focus:ring-sky-500 focus:border-sky-500 transition-all shadow-sm",
+            oninput: "this.form.requestSubmit()" %>
+      </div>
+    <% end %>
+
+    <%= link_to new_admin_site_path, class: "flex items-center gap-2 px-6 py-3 bg-sky-600 text-white rounded-2xl text-sm font-bold shadow-lg shadow-sky-200 hover:bg-sky-700 transition-all" do %>
+      <%= heroicon "plus", variant: :solid, options: { class: "h-5 w-5" } %>
+      添加站点
+    <% end %>
+  </div>
+</div>
+
+<div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
+  <div class="p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/30">
+    <h3 class="text-xl font-black text-slate-800 tracking-tight text-sky-600">已收录站点</h3>
+    <span class="px-3 py-1 bg-white border border-slate-200 rounded-full text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+      当前页 <%= @sites.count %> 个 / 总计 <%= @pagy.count %>
+    </span>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-slate-50/50 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+          <th class="p-6">分类</th>
+          <th class="p-6">站点信息</th>
+          <th class="p-6">图标</th>
+          <th class="p-6 text-center">状态</th>
+          <th class="p-6 text-right">操作</th>
+        </tr>
+      </thead>
+      <tbody id="admin_sites_list" class="divide-y divide-slate-50">
+        <%= render partial: "site_row", collection: @sites, as: :site %>
+      </tbody>
+    </table>
+
+    <% if @pagy.next %>
+      <div id="infinite_scroll_trigger" class="py-10" data-controller="infinite-scroll">
+        <%= link_to "加载更多", admin_sites_path(page: @pagy.next, q: params[:q]), 
+            class: "hidden", data: { turbo_stream: true } %>
+      </div>
+    <% end %>
+  </div>
+</div>

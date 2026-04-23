@@ -1,0 +1,94 @@
+<%= helpers.turbo_frame_tag "auth_frame" do %>
+  <div class="w-full max-w-[420px] mx-auto overflow-hidden transition-all"
+       data-controller="auth--card-component"
+       data-auth--card-component-index-value="<%= active_index %>">
+    
+    <div class="py-2 px-1">
+      <div class="flex p-1.5 bg-gray-100 rounded-2xl mb-8">
+        <button data-auth--card-component-target="tab" 
+                data-action="click->auth--card-component#switch" 
+                data-index="0"
+                class="flex-1 py-2 text-sm font-bold rounded-xl transition-all"
+                data-active-class="bg-white text-[#0369A1] shadow-sm"
+                data-inactive-class="text-gray-500 hover:text-gray-700">
+          账号登录  
+        </button>
+        <button data-auth--card-component-target="tab" 
+                data-action="click->auth--card-component#switch" 
+                data-index="1"
+                data-active-class="bg-white text-[#0369A1] shadow-sm"
+                data-inactive-class="text-gray-500 hover:text-gray-700"
+                class="flex-1 py-2 text-sm font-bold rounded-xl transition-all">
+          立即加入
+        </button>
+      </div>
+
+      <%# 1. 登录面板 %>
+      <div data-auth--card-component-target="panel" data-index="0" class="hidden animate-in fade-in slide-in-from-right-2 duration-300">
+        <%= form_for(@resource, as: :user, url: helpers.session_path(:user), html: { class: "space-y-4", data: { turbo: false } }) do |f| %>
+          <% if helpers.flash[:alert].present? %>
+            <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-2xl text-xs flex items-center gap-2">
+              <%= helpers.heroicon "exclamation-circle", variant: :solid, options: { class: "h-4 w-4" } %>
+              <%= helpers.flash[:alert] %>
+            </div>
+          <% end %>
+          <div class="space-y-4">
+            <%= f.text_field :login, class: "w-full bg-gray-50 border-none rounded-2xl py-3.5 px-5 text-sm focus:ring-2 focus:ring-[#0EA5E9]/20 transition-all", placeholder: "用户名 / 邮箱" %>
+            
+            <div class="relative" data-controller="password-visibility">
+              <%= f.password_field :password, class: "w-full bg-gray-50 border-none rounded-2xl py-3.5 px-5 text-sm focus:ring-2 focus:ring-[#0EA5E9]/20 transition-all pr-12", placeholder: "密码", data: { "password_visibility-target": "input" } %>
+              <button type="button" data-action="password-visibility#toggle" class="absolute inset-y-0 right-0 w-12 flex items-center justify-center text-gray-400 focus:outline-none">
+                <span data-password-visibility-target="icon"><%= helpers.heroicon "eye-slash", variant: :outline, options: { class: "h-5 w-5" } %></span>
+                <span class="hidden" data-password-visibility-target="icon"><%= helpers.heroicon "eye", variant: :outline, options: { class: "h-5 w-5" } %></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between px-1">
+            <label class="flex items-center text-xs text-gray-500 cursor-pointer">
+              <%= f.check_box :remember_me, class: "rounded text-[#0EA5E9] focus:ring-[#0EA5E9] mr-2" %> 记住我
+            </label>
+            <a href="#" class="text-xs text-[#0369A1] font-medium hover:underline">忘记密码？</a>
+          </div>
+
+          <%= render Form::ButtonComponent.new(form: f, text: "开启探索") %>
+        <% end %>
+      </div>
+
+      <%# 2. 注册面板 %>
+      <div data-auth--card-component-target="panel" data-index="1" class="hidden animate-in fade-in slide-in-from-left-2 duration-300">
+        <%= form_for(@resource, as: :user, url: helpers.registration_path(:user), html: { class: "space-y-4", data: { turbo: false } }) do |f| %>
+          <% if f.object.errors.any? %>
+            <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-2xl text-xs space-y-1">
+              <% f.object.errors.full_messages.each do |message| %>
+                <p>• <%= message %></p>
+              <% end %>
+            </div>
+          <% end %>
+
+          <%= f.text_field :username, class: "w-full bg-gray-50 border-none rounded-2xl py-3.5 px-5 text-sm focus:ring-2 focus:ring-[#0EA5E9]/20", placeholder: "用户名" %>
+          <%= f.email_field :email, class: "w-full bg-gray-50 border-none rounded-2xl py-3.5 px-5 text-sm focus:ring-2 focus:ring-[#0EA5E9]/20", placeholder: "邮箱地址" %>
+          
+          <div class="relative" data-controller="password-visibility">
+            <%= f.password_field :password, class: "w-full bg-gray-50 border-none rounded-2xl py-3.5 px-5 text-sm focus:ring-2 focus:ring-[#0EA5E9]/20 pr-12", placeholder: "设置登录密码", data: { "password_visibility-target": "input" } %>
+            <button type="button" data-action="password-visibility#toggle" class="absolute inset-y-0 right-0 w-12 flex items-center justify-center text-gray-400 focus:outline-none">
+              <span data-password-visibility-target="icon"><%= helpers.heroicon "eye-slash", variant: :outline, options: { class: "h-5 w-5" } %></span>
+              <span class="hidden" data-password-visibility-target="icon"><%= helpers.heroicon "eye", variant: :outline, options: { class: "h-5 w-5" } %></span>
+            </button>
+          </div>
+          
+          <%= render Form::MapComponent.new(form: f, height: "h-48") %>
+          
+          <div class="relative">
+            <%= helpers.text_field_tag :_rucaptcha, nil, class: "w-full bg-gray-50 border-none rounded-2xl py-3.5 px-5 text-sm focus:ring-2 focus:ring-[#0EA5E9]/20 pr-28 transition-all", placeholder: "验证码" %>
+            <div class="absolute inset-y-1.5 right-1.5 w-24 rounded-xl overflow-hidden cursor-pointer bg-white border border-gray-100 shadow-sm flex items-center justify-center">
+              <%= helpers.rucaptcha_image_tag %>
+            </div>
+          </div>
+
+          <%= render Form::ButtonComponent.new(form: f, text: "立即加入") %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

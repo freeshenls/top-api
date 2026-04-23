@@ -1,0 +1,32 @@
+<%# app/views/admin/dashboard/index.html.erb %>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+  <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 group">
+    <div class="h-12 w-12 bg-sky-50 rounded-2xl flex items-center justify-center text-sky-600 mb-4 group-hover:bg-sky-600 group-hover:text-white transition-all">
+      <%= heroicon "users", variant: :outline, options: { class: "h-6 w-6" } %>
+    </div>
+    <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">总注册用户</p>
+    <p class="text-3xl font-black text-slate-800"><%= @stats[:total_users] %></p>
+  </div>
+
+  <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 group">
+    <div class="h-12 w-12 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 mb-4 group-hover:bg-amber-500 group-hover:text-white transition-all">
+      <%= heroicon "sparkles", variant: :outline, options: { class: "h-6 w-6" } %>
+    </div>
+    <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">VIP 会员数</p>
+    <p class="text-3xl font-black text-slate-800"><%= @stats[:vip_users] %></p>
+  </div>
+
+  <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 group">
+    <div class="h-12 w-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 mb-4 group-hover:bg-emerald-500 group-hover:text-white transition-all">
+      <%= heroicon "user-plus", variant: :outline, options: { class: "h-6 w-6" } %>
+    </div>
+    <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">今日新增</p>
+    <p class="text-3xl font-black text-slate-800"><%= @stats[:new_users_today] %></p>
+  </div>
+</div>
+
+<div class="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-sm">
+  <h3 class="text-xl font-black text-slate-800 mb-6 tracking-tight text-center">欢迎回到管理后台</h3>
+  <p class="text-slate-400 text-center text-sm">在这里您可以管理您的 AI 领航社区会员数据、监控系统状态以及手动调整用户权益。</p>
+</div>

@@ -1,0 +1,39 @@
+<%# app/views/shared/_contact_dialog.html.erb %>
+
+<dialog data-contact-dialog-target="dialog" 
+        data-action="click->contact-dialog#clickOutside"
+        class="m-auto backdrop:bg-slate-900/50 backdrop:backdrop-blur-sm p-0 rounded-[2.5rem] shadow-2xl border-none bg-white">
+  <div class="w-full max-w-[400px] bg-white overflow-hidden">
+    <div class="relative p-8 text-center">
+      <!-- Close Button -->
+      <button data-action="click->contact-dialog#close" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-all">
+        <%= heroicon "x-mark", variant: :solid, options: { class: "h-5 w-5" } %>
+      </button>
+
+      <div class="mb-6 mt-4">
+        <div class="h-16 w-16 bg-sky-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <%= heroicon "chat-bubble-left-right", variant: :solid, options: { class: "h-8 w-8 text-sky-500" } %>
+        </div>
+        <h3 class="text-xl font-black text-slate-800">联系客服</h3>
+        <p class="text-slate-400 text-xs mt-2 font-medium">请扫描下方二维码，添加客服微信</p>
+      </div>
+
+      <div class="bg-slate-50 p-6 rounded-3xl mb-6 flex justify-center">
+        <div class="h-48 w-48 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
+           <%= image_tag asset_path('qr_code.png'), class: "h-full w-full object-contain", alt: "WeChat QR Code" %>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div class="flex items-center justify-center gap-2 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+          <span class="h-1 w-1 bg-sky-400 rounded-full"></span>
+          <span>人工服务 · 在线解答</span>
+          <span class="h-1 w-1 bg-sky-400 rounded-full"></span>
+        </div>
+        <button data-action="click->contact-dialog#close" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm hover:bg-slate-800 transition-colors">
+          我知道了
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>

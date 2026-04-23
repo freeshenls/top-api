@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Top Api" %></title>
+    <script type="text/javascript">
+      window._AMapSecurityConfig = {
+        securityJsCode: 'f53e0434d742d93ef1e0ffb53537a3ca'
+      }
+    </script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=3ead98e08736998fd319dfb955b11f81"></script>
+    <title><%= content_for(:title) || "AI 领航" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Top Api">
+    <meta name="application-name" content="AI 领航">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -14,18 +20,26 @@
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <%# <link rel="icon" href="/icon.png" type="image/png"> %>
+    <link rel="icon" href="<%= asset_path('logo.svg') %>" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "swiper-bundle.min", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
+  <body data-controller="dialog" data-dialog-open-value="<%= params[:open_auth].present? %>">
+    <%= yield %>
+    <%= render "shared/auth_dialog" %>
+    <% if params[:open_auth].present? %>
+      <script>
+        document.addEventListener("turbo:load", () => {
+          const dialog = document.querySelector('dialog[data-dialog-target="dialog"]');
+          if (dialog) dialog.showModal();
+        });
+      </script>
+    <% end %>
   </body>
 </html>

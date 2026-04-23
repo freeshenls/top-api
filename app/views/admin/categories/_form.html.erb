@@ -1,0 +1,33 @@
+<%# app/views/admin/categories/_form.html.erb %>
+
+<%= form_with(model: [:admin, category], class: "bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-10 space-y-8") do |f| %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="space-y-2">
+      <%= f.label :name, "分类名称", class: "text-sm font-bold text-slate-700 ml-1" %>
+      <%= f.text_field :name, class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500", placeholder: "例如：AI 写作工具" %>
+    </div>
+    <div class="space-y-2">
+      <%= f.label :parent_id, "上级分类 (可选)", class: "text-sm font-bold text-slate-700 ml-1" %>
+      <%= f.collection_select :parent_id, Category.roots, :id, :name, { include_blank: "顶级分类" }, { class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500" } %>
+    </div>
+    <div class="space-y-2">
+      <%= f.label :position, "显示顺序", class: "text-sm font-bold text-slate-700 ml-1" %>
+      <%= f.number_field :position, class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500" %>
+    </div>
+  </div>
+
+  <div class="space-y-2">
+    <%= f.label :icon, "Heroicon 名称 (参考 heroicons.com)", class: "text-sm font-bold text-slate-700 ml-1" %>
+    <%= f.text_field :icon, class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500", placeholder: "例如：pencil-square, images, video-camera" %>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <%= f.check_box :active, class: "rounded text-sky-600 focus:ring-sky-500" %>
+    <%= f.label :active, "启用该分类", class: "text-sm font-bold text-slate-700" %>
+  </div>
+
+  <div class="pt-4 flex gap-4">
+    <%= f.submit "提交保存", class: "px-8 py-3 bg-sky-600 text-white rounded-2xl text-sm font-bold shadow-lg shadow-sky-200 hover:bg-sky-700 transition-all cursor-pointer" %>
+    <%= link_to "返回列表", admin_categories_path, class: "px-8 py-3 bg-slate-100 text-slate-600 rounded-2xl text-sm font-bold hover:bg-slate-200 transition-all" %>
+  </div>
+<% end %>

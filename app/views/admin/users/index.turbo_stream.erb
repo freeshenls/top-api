@@ -1,0 +1,14 @@
+<%= turbo_stream.append "admin_users_list" do %>
+  <%= render partial: "user_row", collection: @users, as: :user %>
+<% end %>
+
+<% if @pagy.next %>
+  <%= turbo_stream.replace "infinite_scroll_trigger" do %>
+    <div id="infinite_scroll_trigger" class="py-10" data-controller="infinite-scroll">
+      <%= link_to "加载更多", admin_users_path(page: @pagy.next, q: params[:q]), 
+          class: "hidden", data: { turbo_stream: true } %>
+    </div>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove "infinite_scroll_trigger" %>
+<% end %>

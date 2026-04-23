@@ -1,0 +1,362 @@
+<%# app/views/home/index.html.erb %>
+
+<div class="min-h-screen bg-[#F8FAFC] flex" data-controller="smooth-scroll search">
+
+  <!-- 1. 左侧侧边栏 (保持不变) -->
+  <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-slate-200 sticky top-0 h-screen overflow-y-auto custom-scrollbar">
+    <div class="p-6">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="h-10 w-10 bg-gradient-to-br from-[#0EA5E9] to-[#0369A1] rounded-xl flex items-center justify-center shadow-lg shadow-sky-200 flex-shrink-0">
+          <%= image_tag asset_path('logo.svg'), class: "h-6 w-6 brightness-0 invert", alt: "Logo" %>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-lg font-bold text-slate-800 leading-tight">AI 领航</span>
+          <span class="text-[10px] text-sky-500 font-bold tracking-widest uppercase">实战圈子</span>
+        </div>
+      </div>
+      <nav class="space-y-1 -mx-6">
+        <% @all_categories.each do |category| %>
+          <div data-controller="menu" class="group/menu">
+            <div class="group">
+              <a href="#<%= category.term_id.presence || "category_#{category.id}" %>" 
+                 class="flex items-center justify-between px-6 py-3 text-slate-600 hover:bg-sky-50 hover:text-[#0369A1] transition-all"
+                 data-action="click->smooth-scroll#scrollTo <%= 'click->menu#toggle' if category.children.any? %>">
+                <div class="flex items-center gap-3">
+                  <%= heroicon category.icon.presence || "squares-2x2", variant: :outline, options: { class: "h-5 w-5 text-slate-400 group-hover:text-sky-500" } %>
+                  <span class="font-medium text-sm text-slate-700"><%= category.name %></span>
+                </div>
+                
+                <% if category.children.any? %>
+                  <div class="text-slate-300 group-hover:text-sky-500 transition-all">
+                    <%= heroicon "chevron-right", variant: :mini, options: { 
+                      class: "h-4 w-4 transition-transform duration-200",
+                      "data-menu-target": "icon"
+                    } %>
+                  </div>
+                <% end %>
+              </a>
+            </div>
+            
+            <% if category.children.any? %>
+              <div class="hidden bg-slate-50/50 py-1 transition-all" data-menu-target="content">
+                <% category.children.each do |child| %>
+                  <a href="#<%= child.term_id.presence || "category_#{child.id}" %>" 
+                     class="flex items-center gap-3 pl-14 pr-6 py-2 text-xs text-slate-500 hover:text-sky-600 hover:bg-sky-100/50 transition-all"
+                     data-action="click->smooth-scroll#scrollTo">
+                    <span><%= child.name %></span>
+                  </a>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </nav>
+    </div>
+<truncated 10 lines>
+    <div class="mt-auto p-4 m-4 bg-sky-50 rounded-2xl border border-sky-100">
+      <div class="flex items-center gap-2 mb-2 text-sky-900">
+        <%= heroicon "user-plus", variant: :solid, options: { class: "h-4 w-4" } %>
+        <span class="text-xs font-bold">加入会员</span>
+      </div>
+      <p class="text-[11px] text-sky-700 leading-relaxed mb-3">
+        尊享 1000+ AI 教程、行业大咖分享课程。
+      </p>
+      <%= link_to "立即开通", pricing_path, class: "block text-center py-2 bg-[#0EA5E9] text-white text-[11px] font-bold rounded-lg shadow-md shadow-sky-200 hover:bg-[#0369A1] transition-colors mb-3" %>
+      
+      <div data-controller="contact-dialog">
+        <button data-action="click->contact-dialog#open" class="w-full flex items-center justify-center gap-2 py-2 border border-sky-200 text-sky-600 text-[10px] font-bold rounded-lg hover:bg-sky-100 transition-colors cursor-pointer">
+          <%= heroicon "chat-bubble-left-right", variant: :solid, options: { class: "h-3 w-3" } %>
+          联系客服
+        </button>
+        <%= render "shared/contact_dialog" %>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 2. 主体区域 -->
+  <main class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto scroll-smooth" data-smooth-scroll-target="scrollContainer">
+    <!-- 顶部 Header -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-slate-100 px-4 lg:px-8 py-4 flex items-center justify-between gap-4">
+      <!-- 移动端 Logo (仅在侧边栏隐藏时显示) -->
+      <div class="flex items-center gap-3 lg:hidden flex-shrink-0">
+        <div class="h-9 w-9 bg-gradient-to-br from-[#0EA5E9] to-[#0369A1] rounded-xl flex items-center justify-center shadow-lg shadow-sky-200">
+          <%= image_tag asset_path('logo.svg'), class: "h-5 w-5 brightness-0 invert", alt: "Logo" %>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-sm font-bold text-slate-800 leading-tight">AI 领航</span>
+          <span class="text-[8px] text-sky-500 font-bold tracking-widest uppercase">实战圈子</span>
+        </div>
+      </div>
+
+      <div class="flex-1 max-w-xl">
+        <div class="relative group">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+            <%= heroicon "magnifying-glass", variant: :outline, options: { class: "h-5 w-5" } %>
+          </div>
+          <input type="text" 
+                 placeholder="搜索 AI 工具、教程、动态..." 
+                 class="w-full bg-slate-100/50 border-none rounded-2xl py-2.5 pl-11 pr-4 text-sm focus:ring-2 focus:ring-sky-500/20 transition-all"
+                 data-action="input->search#perform"
+                 data-search-target="input">
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 ml-6">
+        <% unless current_user&.is_vip %>
+          <%= link_to pricing_path, class: "hidden sm:flex items-center gap-2 px-4 py-2 bg-[#0EA5E9] text-white text-xs font-bold rounded-xl shadow-lg shadow-sky-200 hover:bg-[#0369A1] transition-all" do %>
+            <%= heroicon "sparkles", variant: :solid, options: { class: "h-3.5 w-3.5" } %>
+            <span>开通会员</span>
+          <% end %>
+        <% end %>
+        
+        <div>
+          <% if user_signed_in? %>
+            <!-- @stimulus-components/dropdown 用户中心 (点击触发) -->
+            <div class="relative" data-controller="dropdown">
+              <button data-action="click->dropdown#toggle click@window->dropdown#hide" class="h-10 w-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 hover:bg-sky-50 hover:text-sky-600 transition-all border border-slate-200 focus:outline-none">
+                <%= heroicon "user", variant: :solid, options: { class: "h-5 w-5" } %>
+                <% if current_user.is_vip %>
+                  <div class="absolute -top-1 -right-1 h-4 w-4 bg-amber-400 rounded-full border-2 border-white flex items-center justify-center">
+                    <%= heroicon "sparkles", variant: :solid, options: { class: "h-2 w-2 text-white" } %>
+                  </div>
+                <% end %>
+              </button>
+
+              <!-- 官方 Dropdown 的 target 是 menu -->
+              <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 z-50 w-64 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in duration-200">
+                <div class="px-5 py-4 bg-slate-50/50 border-b border-slate-100 text-left">
+                  <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 bg-sky-500 rounded-xl flex items-center justify-center text-white font-bold">
+                      <%= current_user.username[0].upcase %>
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                      <strong class="block text-sm text-slate-800 truncate"><%= current_user.username %></strong>
+                      <span class="block truncate text-[11px] font-medium text-slate-400"><%= current_user.email %></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="py-2 text-left">
+                  <%# 1. 个人中心 %>
+                  <%= link_to member_path(current_user), class: "flex items-center gap-3 px-5 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-sky-600 transition-colors group" do %>
+                    <%= heroicon "user-circle", variant: :outline, options: { class: "h-4 w-4 text-slate-400 group-hover:text-sky-500" } %>
+                    <span>个人中心</span>
+                  <% end %>
+
+                  <%# 2. 修改密码 %>
+                  <%= link_to edit_user_registration_path, 
+                      class: "flex items-center gap-3 px-5 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-sky-600 transition-colors group",
+                      data: { action: "click->dialog#open", turbo_frame: "auth_frame" } do %>
+                    <%= heroicon "lock-closed", variant: :outline, options: { class: "h-4 w-4 text-slate-400 group-hover:text-sky-500" } %>
+                    <span>修改密码</span>
+                  <% end %>
+                  
+                  <div class="h-px bg-slate-50 my-1 mx-4"></div>
+
+                  <% if current_user.is_admin? %>
+                    <%= link_to admin_root_path, class: "flex items-center gap-3 px-5 py-3 text-sm text-amber-600 hover:bg-amber-50 transition-colors group font-bold" do %>
+                      <%= heroicon "cog-6-tooth", variant: :outline, options: { class: "h-4 w-4 text-amber-400" } %>
+                      <span>进入管理后台</span>
+                    <% end %>
+                    <div class="h-px bg-slate-50 my-1 mx-4"></div>
+                  <% end %>
+
+                  <%# 3. 退出登录 %>
+                  <%= button_to destroy_user_session_path, method: :delete, data: { turbo: false }, class: "w-full flex items-center gap-3 px-5 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors group cursor-pointer" do %>
+                    <%= heroicon "arrow-left-start-on-rectangle", variant: :outline, options: { class: "h-4 w-4 text-red-400 group-hover:text-red-500" } %>
+                    <span>退出登录</span>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% else %>
+            <div class="flex items-center">
+              <%= link_to new_user_session_path, 
+                  class: "flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-slate-700 to-slate-900 text-white text-sm font-bold rounded-2xl shadow-lg shadow-slate-200 transition-all hover:scale-105 active:scale-95",
+                  data: { action: "click->dialog#open", turbo_frame: "auth_frame" } do %>
+                <%= heroicon "user-circle", variant: :solid, options: { class: "h-4 w-4 text-sky-400" } %>
+                <span>登录 / 注册</span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </header>
+
+    <div class="p-4 lg:p-8 space-y-12 pb-20">
+      
+      <!-- @stimulus-components/carousel 轮播区域 -->
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 relative h-80 lg:h-96 rounded-[2.5rem] overflow-hidden bg-slate-900 group shadow-xl">
+          <div data-controller="carousel" 
+               data-carousel-options-value='{"autoplay": {"delay": 5000}, "loop": true, "pagination": {"el": ".swiper-pagination"}, "navigation": {"nextEl": ".swiper-button-next", "prevEl": ".swiper-button-prev"}}'
+               class="swiper h-full w-full">
+            <div class="swiper-wrapper">
+              <% if @carousel_items.any? %>
+                <% @carousel_items.each do |item| %>
+                  <div class="swiper-slide relative">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10"></div>
+                    <% if item.image.present? %>
+                      <img src="<%= item.image %>" class="absolute inset-0 h-full w-full object-cover opacity-60">
+                    <% end %>
+                    <div class="absolute bottom-12 left-12 z-20 max-w-lg text-white">
+                      <h2 class="text-3xl lg:text-4xl font-black mb-4 leading-tight"><%= item.title %></h2>
+                      <p class="text-slate-300 text-sm leading-relaxed mb-6 italic"><%= item.description %></p>
+                      <%= link_to "立即探索", item.link.presence || "#", class: "inline-block px-8 py-3 bg-white text-slate-900 rounded-2xl font-black text-sm hover:bg-sky-50 transition-colors" %>
+                    </div>
+                  </div>
+                <% end %>
+              <% else %>
+                <div class="swiper-slide flex items-center justify-center bg-slate-800 text-slate-500">
+                  <p class="text-sm font-bold">请在后台添加轮播内容</p>
+                </div>
+              <% end %>
+            </div>
+            <div class="swiper-pagination !bottom-6"></div>
+            <div class="swiper-button-prev !text-white/30 hover:!text-white after:!text-xl !left-6"></div>
+            <div class="swiper-button-next !text-white/30 hover:!text-white after:!text-xl !right-6"></div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-6 text-white font-bold lg:h-96">
+          <!-- 近期活动 -->
+          <div class="flex-1 bg-gradient-to-br from-sky-400 to-sky-600 rounded-[2.5rem] p-6 shadow-lg relative overflow-hidden group" data-search-target="category">
+            <div class="relative z-10 flex flex-col h-full">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg">近期活动</h3>
+                <%= heroicon "calendar", variant: :solid, options: { class: "h-5 w-5 text-white/50" } %>
+              </div>
+              <div id="home_activities_list" class="space-y-3 overflow-y-auto custom-scrollbar pr-2 flex-1">
+                <%= render partial: "activity_item", collection: @upcoming_activities, as: :activity %>
+              </div>
+            </div>
+            <%= heroicon "sparkles", variant: :solid, options: { class: "absolute -bottom-4 -right-4 h-24 w-24 text-white/10 group-hover:scale-125 transition-transform duration-500" } %>
+          </div>
+
+          <!-- 最新动态 -->
+          <div class="flex-1 bg-slate-900 rounded-[2.5rem] p-6 shadow-lg relative overflow-hidden group border border-slate-800" data-search-target="category">
+            <div class="relative z-10 flex flex-col h-full">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg text-sky-400">最新动态</h3>
+                <%= heroicon "megaphone", variant: :solid, options: { class: "h-5 w-5 text-sky-500/50" } %>
+              </div>
+              <div id="home_posts_list" class="space-y-3 overflow-y-auto custom-scrollbar pr-2 flex-1">
+                <%= render partial: "post_item", collection: @latest_posts, as: :post %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 搜索无结果提示 -->
+      <div data-search-target="noResults" class="hidden py-20 text-center">
+        <div class="h-20 w-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-300">
+          <%= heroicon "magnifying-glass", variant: :outline, options: { class: "h-10 w-10" } %>
+        </div>
+        <h3 class="text-xl font-black text-slate-800 mb-2">未找到匹配内容</h3>
+        <p class="text-slate-400 text-sm">尝试更换关键词，或者浏览其他分类</p>
+      </div>
+
+      <!-- 动态分类站点区域 -->
+      <div id="home_categories_list" class="space-y-12">
+        <%= render partial: "category_section", collection: @categories, as: :category %>
+      </div>
+
+      <% if @pagy.next %>
+        <div id="infinite_scroll_trigger" class="py-10" data-controller="infinite-scroll">
+          <%= link_to "加载更多", root_path(page: @pagy.next), 
+              class: "hidden", data: { turbo_stream: true } %>
+        </div>
+      <% end %>
+
+
+
+      <section id="members" class="scroll-mt-24 bg-slate-900 rounded-[3rem] p-10 text-white relative" data-search-target="category">
+        <h3 class="text-2xl font-black mb-10 border-l-4 border-sky-500 pl-4 tracking-wider">会员展示</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <% @featured_members.each do |m| %>
+            <%= link_to member_path(m.id || 1), 
+                class: "group/card",
+                data: {
+                  search_target: "item",
+                  search_content: [m.username, m.member_code, m.skills, m.bio].join(' ')
+                } do %>
+              <div class="bg-white/5 border border-white/10 p-5 rounded-2xl hover:bg-white/10 transition-all transform group-hover/card:-translate-y-1">
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="h-10 w-10 bg-sky-600 rounded-full flex items-center justify-center font-bold text-sm text-white"><%= m.username[0] %></div>
+                  <div>
+                    <p class="text-sm font-bold text-white truncate"><%= m.username %></p>
+                    <p class="text-[10px] text-sky-400">会员码：<%= m.member_code.presence || m.id.to_s.rjust(3, '0') %></p>
+                  </div>
+                </div>
+                <div class="space-y-2 border-t border-white/5 pt-3 mt-3">
+                  <p class="text-[11px] text-slate-300 line-clamp-2 min-h-[32px] italic"><%= m.bio.presence || "AI 实践者" %></p>
+                  <p class="text-[10px] text-sky-500 font-bold">查看详情 &rarr;</p>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <!-- 会员雷达弹窗 -->
+        <dialog data-member-radar-target="dialog"
+                class="backdrop:bg-slate-900/80 backdrop:backdrop-blur-xl rounded-[3rem] shadow-2xl p-0 w-full max-w-5xl border-none bg-white overflow-hidden animate-in fade-in zoom-in duration-300 m-auto">
+          
+          <div class="relative">
+            <div class="p-8 border-b border-slate-100 flex items-center justify-between">
+              <div>
+                <h3 class="text-2xl font-black text-slate-800 tracking-tight text-left">会员分布雷达</h3>
+                <p class="text-slate-400 text-sm mt-1 text-left">当前已有 <%= Sys::User.count %> 位圈友加入，实战圈子遍布全球</p>
+              </div>
+              <button data-action="click->member-radar#close" class="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all">
+                <%= heroicon "x-mark", variant: :outline, options: { class: "h-6 w-6" } %>
+              </button>
+            </div>
+
+            <div class="p-10">
+              <div class="relative h-[600px] w-full bg-slate-900 rounded-[2.5rem] flex items-center justify-center overflow-hidden">
+                
+                <!-- 高科技雷达背景网格 -->
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <!-- 刻度环 -->
+                  <div class="w-[100px] h-[100px] border border-sky-500/20 rounded-full shadow-[0_0_15px_rgba(14,165,233,0.1)]"></div>
+                  <div class="absolute w-[200px] h-[200px] border border-sky-500/20 rounded-full shadow-[0_0_20px_rgba(14,165,233,0.1)]"></div>
+                  <div class="absolute w-[300px] h-[300px] border border-sky-500/20 rounded-full shadow-[0_0_25px_rgba(14,165,233,0.1)]"></div>
+                  <div class="absolute w-[400px] h-[400px] border border-sky-500/20 rounded-full shadow-[0_0_30px_rgba(14,165,233,0.1)]"></div>
+                  <div class="absolute w-[500px] h-[500px] border border-sky-500/20 rounded-full shadow-[0_0_35px_rgba(14,165,233,0.1)]"></div>
+                  <div class="absolute w-[600px] h-[600px] border border-sky-500/10 rounded-full shadow-[0_0_40px_rgba(14,165,233,0.05)]"></div>
+                  
+                  <!-- 十字准星与刻度线 -->
+                  <div class="absolute h-full w-px bg-gradient-to-b from-transparent via-sky-500/30 to-transparent"></div>
+                  <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-sky-500/30 to-transparent"></div>
+                  <div class="absolute h-full w-px bg-sky-500/10 rotate-45"></div>
+                  <div class="absolute h-full w-px bg-sky-500/10 -rotate-45"></div>
+
+                  <!-- 角度文字 -->
+                  <span class="absolute top-4 text-[10px] text-sky-500/40 font-mono">000°</span>
+                  <span class="absolute right-4 text-[10px] text-sky-500/40 font-mono">090°</span>
+                  <span class="absolute bottom-4 text-[10px] text-sky-500/40 font-mono">180°</span>
+                  <span class="absolute left-4 text-[10px] text-sky-500/40 font-mono">270°</span>
+
+                  <!-- 中心发光 -->
+                  <div class="absolute w-20 h-20 bg-sky-500/10 blur-3xl rounded-full"></div>
+                </div>
+
+                <!-- 装饰边角 -->
+                <div class="absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-sky-500/30 m-6 rounded-tl-xl"></div>
+                <div class="absolute top-0 right-0 w-10 h-10 border-t-2 border-r-2 border-sky-500/30 m-6 rounded-tr-xl"></div>
+                <div class="absolute bottom-0 left-0 w-10 h-10 border-b-2 border-l-2 border-sky-500/30 m-6 rounded-bl-xl"></div>
+                <div class="absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-sky-500/30 m-6 rounded-br-xl"></div>
+
+                <!-- 散点容器 -->
+                <div class="absolute inset-0 z-10" data-member-radar-target="container"></div>
+
+                <!-- Tooltip -->
+                <div data-member-radar-target="tooltip" class="hidden absolute z-50 bg-white shadow-2xl rounded-2xl border border-slate-100 pointer-events-none transition-opacity duration-200 w-48">
+                  <!-- Content will be injected by Stimulus -->
+                </div>
+
+      </section>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,31 @@
+<tr class="hover:bg-slate-50 transition-colors group">
+  <td class="p-6">
+    <span class="text-xs font-mono text-slate-400"><%= activity.event_date %></span>
+  </td>
+  <td class="p-6">
+    <p class="text-sm font-bold text-slate-800"><%= activity.title %></p>
+  </td>
+  <td class="p-6">
+    <div class="flex items-center gap-2 text-slate-500">
+      <%= heroicon "map-pin", variant: :outline, options: { class: "h-3.5 w-3.5" } %>
+      <span class="text-xs"><%= activity.location %></span>
+    </div>
+  </td>
+  <td class="p-6 text-center">
+    <% if activity.status == 'open' %>
+      <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-[10px] font-black ring-1 ring-green-200">报名中</span>
+    <% else %>
+      <span class="px-3 py-1 bg-slate-100 text-slate-400 rounded-full text-[10px] font-bold">已结束</span>
+    <% end %>
+  </td>
+  <td class="p-6 text-right">
+    <div class="flex items-center justify-end gap-2">
+      <%= link_to edit_admin_activity_path(activity), class: "p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-all" do %>
+        <%= heroicon "pencil-square", variant: :outline, options: { class: "h-5 w-5" } %>
+      <% end %>
+      <%= button_to admin_activity_path(activity), method: :delete, data: { confirm: '确定删除吗？' }, class: "p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" do %>
+        <%= heroicon "trash", variant: :outline, options: { class: "h-5 w-5" } %>
+      <% end %>
+    </div>
+  </td>
+</tr>

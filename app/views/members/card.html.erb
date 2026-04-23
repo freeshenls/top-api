@@ -1,0 +1,23 @@
+<div class="w-64 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
+  <div class="h-24 bg-gradient-to-br from-sky-400 to-blue-600 p-4 flex items-end">
+    <div class="h-16 w-16 rounded-2xl border-4 border-white overflow-hidden shadow-lg -mb-8 bg-white">
+      <% if @member.respond_to?(:avatar) && @member.avatar.attached? %>
+        <%= image_tag @member.avatar, class: "h-full w-full object-cover" %>
+      <% else %>
+        <img src="https://ui-avatars.com/api/?name=<%= @member.username %>&background=0EA5E9&color=fff" class="h-full w-full object-cover">
+      <% end %>
+    </div>
+  </div>
+  <div class="pt-10 p-4">
+    <div class="flex items-center justify-between mb-2">
+      <h4 class="font-black text-slate-800"><%= @member.username %></h4>
+      <span class="text-[10px] bg-sky-50 text-sky-600 px-2 py-0.5 rounded-full font-bold">VIP</span>
+    </div>
+    <p class="text-[11px] text-slate-500 line-clamp-2 mb-4 leading-relaxed">
+      <%= @member.bio.presence || "这位圈友很神秘，暂时没有简介..." %>
+    </p>
+    <div class="flex items-center gap-2">
+      <%= link_to "查看主页", member_path(@member), class: "flex-1 text-center py-2 bg-slate-900 text-white text-[10px] font-bold rounded-xl hover:bg-slate-800 transition-colors" %>
+    </div>
+  </div>
+</div>

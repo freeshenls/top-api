@@ -1,0 +1,11 @@
+<%= link_to "#", 
+    class: "block",
+    data: {
+      search_target: "item",
+      search_content: post.title
+    } do %>
+  <div class="flex items-center justify-between gap-4 group/item cursor-pointer">
+    <span class="text-slate-200 text-xs truncate group-hover/item:text-sky-400 transition-colors"><%= post.title %></span>
+    <span class="text-slate-500 text-[10px] font-mono flex-shrink-0"><%= post.published_at&.strftime("%m-%d") %></span>
+  </div>
+<% end %>

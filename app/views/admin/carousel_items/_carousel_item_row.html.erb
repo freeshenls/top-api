@@ -1,0 +1,42 @@
+<tr class="hover:bg-slate-50 transition-colors group">
+  <td class="p-6">
+    <span class="font-mono text-slate-400"><%= carousel_item.position %></span>
+  </td>
+  <td class="p-6">
+    <div>
+      <p class="text-sm font-bold text-slate-800"><%= carousel_item.title %></p>
+      <p class="text-[10px] text-slate-400 line-clamp-1"><%= carousel_item.description %></p>
+    </div>
+  </td>
+  <td class="p-6">
+    <div class="flex items-center gap-2">
+      <div class="h-10 w-16 bg-slate-100 rounded-lg overflow-hidden">
+        <% if carousel_item.image.present? %>
+          <img src="<%= carousel_item.image %>" class="h-full w-full object-cover">
+        <% else %>
+          <div class="h-full w-full flex items-center justify-center text-slate-300">
+            <%= heroicon "photo", variant: :outline, options: { class: "h-5 w-5" } %>
+          </div>
+        <% end %>
+      </div>
+      <span class="text-[10px] text-slate-400 font-mono truncate max-w-[150px]"><%= carousel_item.image %></span>
+    </div>
+  </td>
+  <td class="p-6 text-center">
+    <% if carousel_item.active %>
+      <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-[10px] font-black ring-1 ring-green-200">显示中</span>
+    <% else %>
+      <span class="px-3 py-1 bg-slate-100 text-slate-400 rounded-full text-[10px] font-bold">已下架</span>
+    <% end %>
+  </td>
+  <td class="p-6 text-right">
+    <div class="flex items-center justify-end gap-2">
+      <%= link_to edit_admin_carousel_item_path(carousel_item), class: "p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-all" do %>
+        <%= heroicon "pencil-square", variant: :outline, options: { class: "h-5 w-5" } %>
+      <% end %>
+      <%= button_to admin_carousel_item_path(carousel_item), method: :delete, data: { confirm: '确定删除吗？' }, class: "p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" do %>
+        <%= heroicon "trash", variant: :outline, options: { class: "h-5 w-5" } %>
+      <% end %>
+    </div>
+  </td>
+</tr>

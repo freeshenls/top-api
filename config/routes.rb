@@ -1,14 +1,47 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  # 静态页面
+  get 'privacy', to: 'pages#privacy'
+  get 'terms',   to: 'pages#terms'
+  get 'pricing', to: 'pricing#index', as: :pricing
+  
+  devise_for :users, 
+             class_name: 'Sys::User', 
+             path: '',
+             controllers: {
+               registrations: 'sys/registrations',
+               sessions: 'sys/sessions'
+             },
+             path_names: { 
+               sign_in: 'login', 
+               sign_up: 'register' 
+             }
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  # 管理员后台
+  namespace :admin do
+    root "dashboard#index"
+    resources :users, only: [:index, :update, :destroy] do
+      member do
+        patch :toggle_vip
+      end
+    end
+    resources :carousel_items
+    resources :posts
+    resources :activities
+    resources :categories
+    resources :sites
+  end
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  # 会员展示页
+  resources :members, only: [:show] do
+    member do
+      get :card
+    end
+  end
+  get 'user_card', to: 'home#user_card'
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "home#index"
+
+
+  get "up" => "rails/health#show", as: :rails_health_check
 end

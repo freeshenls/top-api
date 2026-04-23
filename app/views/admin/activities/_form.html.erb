@@ -1,0 +1,36 @@
+<%# app/views/admin/activities/_form.html.erb %>
+
+<%= form_with(model: [:admin, activity], class: "bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-10 space-y-8") do |f| %>
+  <div class="space-y-2">
+    <%= f.label :title, "活动名称", class: "text-sm font-bold text-slate-700 ml-1" %>
+    <%= f.text_field :title, class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500", placeholder: "例如：北京 AI 线下交流会" %>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="space-y-2">
+      <%= f.label :location, "活动地点", class: "text-sm font-bold text-slate-700 ml-1" %>
+      <%= f.text_field :location, class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500", placeholder: "例如：北京市朝阳区 xxx 咖啡厅" %>
+    </div>
+    <div class="space-y-2">
+      <%= f.label :event_date, "活动日期", class: "text-sm font-bold text-slate-700 ml-1" %>
+      <%= f.date_field :event_date, class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="space-y-2">
+      <%= f.label :status, "活动状态", class: "text-sm font-bold text-slate-700 ml-1" %>
+      <%= f.select :status, [["报名中", "open"], ["已结束", "closed"]], {}, class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500" %>
+    </div>
+  </div>
+
+  <div class="space-y-2">
+    <%= f.label :description, "活动简介", class: "text-sm font-bold text-slate-700 ml-1" %>
+    <%= f.text_area :description, rows: 4, class: "w-full bg-slate-50 border-slate-200 rounded-2xl py-3 px-5 text-sm focus:ring-sky-500 focus:border-sky-500", placeholder: "简要介绍活动内容、参与方式等..." %>
+  </div>
+
+  <div class="pt-4 flex gap-4">
+    <%= f.submit "保存活动", class: "px-8 py-3 bg-sky-600 text-white rounded-2xl text-sm font-bold shadow-lg shadow-sky-200 hover:bg-sky-700 transition-all cursor-pointer" %>
+    <%= link_to "取消", admin_activities_path, class: "px-8 py-3 bg-slate-100 text-slate-600 rounded-2xl text-sm font-bold hover:bg-slate-200 transition-all" %>
+  </div>
+<% end %>
