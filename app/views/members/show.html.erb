@@ -1,140 +1,131 @@
 <%# app/views/members/show.html.erb %>
 
-<div class="min-h-screen bg-slate-100 flex items-center justify-center p-4 md:p-8">
-  <div class="w-full max-w-5xl bg-white rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[700px]">
+<div class="min-h-screen bg-slate-100 flex items-center justify-center p-2 md:p-4">
+  <div class="w-full max-w-5xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[600px]">
+    <% is_current_user = user_signed_in? && current_user == @member %>
     
     <!-- 左侧栏：头像与会员码 -->
-    <div class="w-full md:w-[35%] bg-gradient-to-b from-sky-50 to-blue-100 p-10 flex flex-col items-center justify-center text-center">
-      <div class="relative mb-8 group">
+    <div class="w-full md:w-[32%] bg-gradient-to-b from-sky-50 to-blue-100 p-8 flex flex-col items-center justify-center text-center">
+      <div class="relative mb-6 group">
         <div class="absolute -inset-4 bg-white/50 rounded-full blur-2xl group-hover:bg-sky-200/50 transition-all duration-700"></div>
-        <div class="relative h-56 w-56 rounded-[2.5rem] overflow-hidden border-4 border-white shadow-xl">
-          <% if @member.respond_to?(:avatar) && @member.avatar.attached? %>
-            <%= image_tag @member.avatar, class: "h-full w-full object-cover" %>
-          <% else %>
-            <img src="https://ui-avatars.com/api/?name=<%= @member.username %>&size=512&background=0EA5E9&color=fff" 
-                 class="h-full w-full object-cover" alt="Member Photo">
-          <% end %>
+        <div class="relative h-48 w-48 rounded-[2rem] overflow-hidden border-4 border-white shadow-xl">
+          <img src="https://ui-avatars.com/api/?name=<%= @member.username %>&size=512&background=0EA5E9&color=fff" 
+               class="h-full w-full object-cover" alt="Member Photo">
         </div>
       </div>
 
-      <h2 class="text-3xl font-black text-slate-800 mb-8 tracking-wider"><%= @member.username %></h2>
+      <h2 class="text-2xl font-black text-slate-800 mb-6 tracking-wider"><%= @member.username %></h2>
 
-      <div class="w-full max-w-[180px] space-y-2">
-        <div class="flex items-center gap-2 text-slate-500 text-sm font-bold">
-          <span class="h-1.5 w-1.5 bg-slate-800 rounded-full"></span>
+      <div class="w-full max-w-[160px] space-y-1.5">
+        <div class="flex items-center gap-2 text-slate-500 text-[11px] font-bold">
+          <span class="h-1 w-1 bg-slate-800 rounded-full"></span>
           会员码：
         </div>
-        <div class="text-4xl font-mono font-black text-slate-900 tracking-tighter">
+        <div class="text-3xl font-mono font-black text-slate-900 tracking-tighter">
           <%= @member.member_code.presence || @member.id.to_s.rjust(3, '0') %>
         </div>
         <div class="h-0.5 w-full bg-slate-300"></div>
       </div>
 
-      <div class="mt-10 w-full" data-controller="member-radar"
-           data-member-radar-members-value="<%= @radar_members.to_json %>"
-           data-member-radar-center-value="<%= { lat: @member.coords&.y || 30.0, lng: @member.coords&.x || 110.0 }.to_json %>">
-        <button data-action="click->member-radar#open" 
-                class="w-full flex items-center justify-center gap-2 px-6 py-4 bg-slate-800 text-white rounded-2xl text-sm font-bold hover:bg-slate-700 transition-all shadow-xl shadow-slate-200 group">
-          <%= heroicon "sparkles", variant: :solid, options: { class: "h-4 w-4 text-amber-400 group-hover:rotate-12 transition-transform" } %>
-          开启雷达探索
-        </button>
+      <div class="mt-8 w-full">
+        <% if is_current_user %>
+          <div class="w-full" data-controller="member-radar"
+               data-member-radar-members-value="<%= @radar_members.to_json %>"
+               data-member-radar-center-value="<%= { lat: @member.coords&.y || 30.0, lng: @member.coords&.x || 110.0 }.to_json %>">
+            <button data-action="click->member-radar#open" 
+                    class="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-800 text-white rounded-xl text-sm font-bold hover:bg-slate-950 transition-all shadow-xl shadow-slate-200 group">
+              <%= heroicon "sparkles", variant: :solid, options: { class: "h-4 w-4 text-amber-400 group-hover:rotate-12 transition-transform" } %>
+              开启雷达探索
+            </button>
 
-        <!-- 会员雷达弹窗 -->
-        <dialog data-member-radar-target="dialog"
-                class="backdrop:bg-slate-900/80 backdrop:backdrop-blur-xl rounded-[3rem] shadow-2xl p-0 w-full max-w-5xl border-none bg-white overflow-hidden animate-in fade-in zoom-in duration-300 m-auto">
-          
-          <div class="relative">
-            <div class="p-8 border-b border-slate-100 flex items-center justify-between">
-              <div>
-                <h3 class="text-2xl font-black text-slate-800 tracking-tight text-left">会员分布雷达</h3>
-                <p class="text-slate-400 text-sm mt-1 text-left">以 <%= @member.username %> 为中心，发现周边的实战圈友</p>
-              </div>
-              <button data-action="click->member-radar#close" class="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all">
-                <%= heroicon "x-mark", variant: :outline, options: { class: "h-6 w-6" } %>
-              </button>
-            </div>
+            <!-- 会员雷达弹窗 -->
+            <dialog data-member-radar-target="dialog"
+                    class="backdrop:bg-slate-900/80 backdrop:backdrop-blur-xl rounded-[2.5rem] shadow-2xl p-0 w-full max-w-5xl border-none bg-white overflow-hidden animate-in fade-in zoom-in duration-300 m-auto">
+              
+              <div class="relative">
+                <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                  <div>
+                    <h3 class="text-xl font-black text-slate-800 tracking-tight text-left">会员分布雷达</h3>
+                    <p class="text-slate-400 text-xs mt-1 text-left">以 <%= @member.username %> 为中心，发现周边的实战圈友</p>
+                  </div>
+                  <button data-action="click->member-radar#close" class="h-10 w-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all">
+                    <%= heroicon "x-mark", variant: :outline, options: { class: "h-5 w-5" } %>
+                  </button>
+                </div>
 
-            <div class="p-10">
-              <div class="relative h-[600px] w-full bg-slate-900 rounded-[2.5rem] overflow-hidden">
-                <!-- 高德地图容器 -->
-                <div id="amap-container" data-member-radar-target="container" class="w-full h-full"></div>
-                
-                <div data-member-radar-target="tooltip" class="hidden absolute z-50 bg-white shadow-2xl rounded-2xl border border-slate-100 pointer-events-none transition-opacity duration-200 w-48 text-left"></div>
+                <div class="p-8">
+                  <div class="relative h-[550px] w-full bg-slate-900 rounded-[2rem] overflow-hidden">
+                    <!-- 高德地图容器 -->
+                    <div id="amap-container" data-member-radar-target="container" class="w-full h-full"></div>
+                    
+                    <div data-member-radar-target="tooltip" class="hidden absolute z-50 bg-white shadow-2xl rounded-2xl border border-slate-100 pointer-events-none transition-opacity duration-200 w-48 text-left"></div>
 
-                <div class="absolute bottom-8 left-8 bg-black/60 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10 text-white/90 text-[10px] z-10 pointer-events-none">
-                  提示：基于高德地图实时展现圈友地理分布。
+                    <div class="absolute bottom-6 left-6 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-white/90 text-[10px] z-10 pointer-events-none">
+                      提示：基于高德地图实时展现圈友地理分布。
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </dialog>
           </div>
-        </dialog>
+        <% end %>
       </div>
     </div>
 
     <!-- 右侧栏：核心信息板块 -->
-    <div class="flex-1 bg-white p-8 md:p-16 flex flex-col gap-10 relative">
+    <div class="flex-1 bg-white p-8 md:p-12 flex flex-col gap-6 relative">
       <!-- 01 关于我 -->
-      <div class="relative group">
+      <div class="relative group/section">
         <div class="flex items-start gap-4">
-          <span class="text-5xl font-black text-sky-100 absolute -top-4 -left-6 select-none group-hover:text-sky-200 transition-colors">01</span>
+          <span class="text-4xl font-black text-sky-100 absolute -top-3 -left-5 select-none group-hover/section:text-sky-200 transition-colors">01</span>
           <div class="relative z-10 w-full">
-            <h3 class="text-xl font-black text-slate-800 mb-4 tracking-tight">关于我</h3>
-            <div class="bg-slate-50/80 rounded-2xl p-6 border border-slate-100 flex items-center justify-between group-hover:bg-white group-hover:shadow-lg transition-all duration-500">
-              <div class="space-y-1">
-                <p class="text-slate-700 font-bold text-lg"><%= @member.bio.presence || "AI 应用落地新玩法探索者" %></p>
-                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">关于我</p>
-              </div>
-              <div class="h-12 w-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-sky-500">
-                <%= heroicon "user", variant: :solid, options: { class: "h-6 w-6" } %>
-              </div>
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-lg font-black text-slate-800 tracking-tight">关于我</h3>
             </div>
+            
+            <%= turbo_frame_tag "profile_bio" do %>
+              <%= render 'profiles/display', field: 'bio', member: @member %>
+            <% end %>
           </div>
         </div>
       </div>
 
       <!-- 02 能提供 -->
-      <div class="relative group">
+      <div class="relative group/section">
         <div class="flex items-start gap-4">
-          <span class="text-5xl font-black text-sky-100 absolute -top-4 -left-6 select-none group-hover:text-sky-200 transition-colors">02</span>
+          <span class="text-4xl font-black text-sky-100 absolute -top-3 -left-5 select-none group-hover/section:text-sky-200 transition-colors">02</span>
           <div class="relative z-10 w-full">
-            <h3 class="text-xl font-black text-slate-800 mb-4 tracking-tight">能提供</h3>
-            <div class="bg-slate-50/80 rounded-2xl p-6 border border-slate-100 flex items-center justify-between group-hover:bg-white group-hover:shadow-lg transition-all duration-500">
-              <div class="space-y-2">
-                <p class="text-slate-700 font-bold leading-tight"><%= @member.skills.presence || "暂未填写擅长领域" %></p>
-                <p class="text-slate-500 text-sm italic">不卖焦虑不灌鸡汤，只说真话只讲实战</p>
-              </div>
-              <div class="h-12 w-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-blue-500">
-                <%= heroicon "bolt", variant: :solid, options: { class: "h-6 w-6" } %>
-              </div>
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-lg font-black text-slate-800 tracking-tight">能提供</h3>
             </div>
+            
+            <%= turbo_frame_tag "profile_skills" do %>
+              <%= render 'profiles/display', field: 'skills', member: @member %>
+            <% end %>
           </div>
         </div>
       </div>
 
       <!-- 03 期望链接 -->
-      <div class="relative group">
+      <div class="relative group/section">
         <div class="flex items-start gap-4">
-          <span class="text-5xl font-black text-sky-100 absolute -top-4 -left-6 select-none group-hover:text-sky-200 transition-colors">03</span>
+          <span class="text-4xl font-black text-sky-100 absolute -top-3 -left-5 select-none group-hover/section:text-sky-200 transition-colors">03</span>
           <div class="relative z-10 w-full">
-            <h3 class="text-xl font-black text-slate-800 mb-4 tracking-tight">期望链接</h3>
-            <div class="bg-slate-50/80 rounded-2xl p-6 border border-slate-100 flex items-center justify-between group-hover:bg-white group-hover:shadow-lg transition-all duration-500">
-              <div class="space-y-2">
-                <p class="text-slate-700 text-sm font-medium leading-relaxed">
-                  <%= @member.expectations.presence || "期望与对 AI 感兴趣也在探索研究的人们一起交流探讨共同成长。" %>
-                </p>
-              </div>
-              <div class="h-12 w-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-indigo-500">
-                <%= heroicon "link", variant: :solid, options: { class: "h-6 w-6" } %>
-              </div>
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-lg font-black text-slate-800 tracking-tight">期望链接</h3>
             </div>
+            
+            <%= turbo_frame_tag "profile_expectations" do %>
+              <%= render 'profiles/display', field: 'expectations', member: @member %>
+            <% end %>
           </div>
         </div>
       </div>
 
       <!-- 底部 Slogan -->
-      <div class="mt-auto pt-8">
-        <div class="bg-slate-800 rounded-2xl py-3 px-6 text-center shadow-lg">
-          <p class="text-[10px] md:text-xs text-white/90 font-bold tracking-[0.2em] uppercase">
+      <div class="mt-auto pt-6">
+        <div class="bg-slate-800 rounded-xl py-2.5 px-6 text-center shadow-lg">
+          <p class="text-[9px] md:text-[10px] text-white/90 font-bold tracking-[0.2em] uppercase">
             Ai 领航实战圈：一个开放、真实、高效、可落地的 AI 实战圈子
           </p>
         </div>
@@ -142,3 +133,4 @@
     </div>
   </div>
 </div>
+

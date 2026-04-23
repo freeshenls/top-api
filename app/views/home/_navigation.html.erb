@@ -1,0 +1,38 @@
+<%# app/views/home/_navigation.html.erb %>
+<nav class="space-y-1 -mx-6">
+  <% categories.each do |category| %>
+    <div data-controller="menu" class="group/menu">
+      <div class="group">
+        <a href="#<%= category.term_id.presence || "category_#{category.id}" %>" 
+           class="flex items-center justify-between px-6 py-3 text-slate-600 hover:bg-sky-50 hover:text-[#0369A1] transition-all"
+           data-action="click->smooth-scroll#scrollTo <%= 'click->menu#toggle' if category.children.any? %> <%= 'click->mobile-menu#hide' if local_assigns[:is_mobile] %>">
+          <div class="flex items-center gap-3">
+            <%= heroicon category.icon.presence || "squares-2x2", variant: :outline, options: { class: "h-5 w-5 text-slate-400 group-hover:text-sky-500" } %>
+            <span class="font-medium text-sm text-slate-700"><%= category.name %></span>
+          </div>
+          
+          <% if category.children.any? %>
+            <div class="text-slate-300 group-hover:text-sky-500 transition-all">
+              <%= heroicon "chevron-right", variant: :mini, options: { 
+                class: "h-4 w-4 transition-transform duration-200",
+                "data-menu-target": "icon"
+              } %>
+            </div>
+          <% end %>
+        </a>
+      </div>
+      
+      <% if category.children.any? %>
+        <div class="hidden bg-slate-50/50 py-1 transition-all" data-menu-target="content">
+          <% category.children.each do |child| %>
+            <a href="#<%= child.term_id.presence || "category_#{child.id}" %>" 
+               class="flex items-center gap-3 pl-14 pr-6 py-2 text-xs text-slate-500 hover:text-sky-600 hover:bg-sky-100/50 transition-all"
+               data-action="click->smooth-scroll#scrollTo <%= 'click->mobile-menu#hide' if local_assigns[:is_mobile] %>">
+              <span><%= child.name %></span>
+            </a>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</nav>

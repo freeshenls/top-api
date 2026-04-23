@@ -1,0 +1,13 @@
+<% frame_id = case params[:field]
+   when 'bio' then "profile_bio"
+   when 'skills' then "profile_skills"
+   when 'expectations' then "profile_expectations"
+end %>
+
+<% if frame_id %>
+  <%= turbo_stream.replace frame_id do %>
+    <%= turbo_frame_tag frame_id do %>
+      <%= render 'profiles/display', field: params[:field], member: @user %>
+    <% end %>
+  <% end %>
+<% end %>

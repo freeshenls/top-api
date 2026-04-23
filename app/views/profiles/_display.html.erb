@@ -1,0 +1,54 @@
+<%# app/views/profiles/_display.html.erb %>
+<% field = local_assigns[:field] %>
+<% member = local_assigns[:member] %>
+<% is_current_user = user_signed_in? && current_user == member %>
+
+<% if is_current_user %>
+  <%= link_to edit_profile_path(field: field), class: "block group/card", data: { turbo_frame: "profile_#{field}" } do %>
+    <div class="bg-slate-50/80 rounded-2xl p-6 border border-slate-100 group-hover/section:bg-white group-hover/section:shadow-lg group-hover/card:border-sky-200 transition-all duration-500 cursor-pointer">
+      <div class="flex items-center justify-between">
+        <div class="space-y-2 flex-1">
+          <% if field == 'bio' %>
+            <p class="text-slate-700 font-bold text-lg"><%= member.bio.presence || "AI 应用落地新玩法探索者" %></p>
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">关于我</p>
+          <% elsif field == 'skills' %>
+            <p class="text-slate-700 font-bold leading-tight"><%= member.skills.presence || "暂未填写擅长领域" %></p>
+            <p class="text-slate-500 text-sm italic">不卖焦虑不灌鸡汤，只说真话只讲实战</p>
+          <% elsif field == 'expectations' %>
+            <p class="text-slate-700 text-sm font-medium leading-relaxed">
+              <%= member.expectations.presence || "期望与对 AI 感兴趣也在探索研究的人们一起交流探讨共同成长。" %>
+            </p>
+          <% end %>
+        </div>
+        <div class="h-12 w-12 bg-white rounded-xl shadow-sm flex items-center justify-center <%= field == 'bio' ? 'text-sky-500' : (field == 'skills' ? 'text-blue-500' : 'text-indigo-500') %> ml-4 group-hover/card:scale-110 transition-transform">
+          <%= heroicon (field == 'bio' ? 'user' : (field == 'skills' ? 'bolt' : 'link')), variant: :solid, options: { class: "h-6 w-6" } %>
+        </div>
+      </div>
+      <div class="mt-4 flex items-center gap-1.5 text-sky-500 opacity-100 md:opacity-0 md:group-hover/card:opacity-100 transition-all text-[10px] font-black uppercase tracking-widest">
+        <%= heroicon "pencil-square", variant: :solid, options: { class: "h-3 w-3" } %>
+        点击修改内容
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <div class="bg-slate-50/80 rounded-2xl p-6 border border-slate-100 group-hover/section:bg-white group-hover/section:shadow-lg transition-all duration-500">
+    <div class="flex items-center justify-between">
+      <div class="space-y-2 flex-1">
+        <% if field == 'bio' %>
+          <p class="text-slate-700 font-bold text-lg"><%= member.bio.presence || "AI 应用落地新玩法探索者" %></p>
+          <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">关于我</p>
+        <% elsif field == 'skills' %>
+          <p class="text-slate-700 font-bold leading-tight"><%= member.skills.presence || "暂未填写擅长领域" %></p>
+          <p class="text-slate-500 text-sm italic">不卖焦虑不灌鸡汤，只说真话只讲实战</p>
+        <% elsif field == 'expectations' %>
+          <p class="text-slate-700 text-sm font-medium leading-relaxed">
+            <%= member.expectations.presence || "期望与对 AI 感兴趣也在探索研究的人们一起交流探讨共同成长。" %>
+          </p>
+        <% end %>
+      </div>
+      <div class="h-12 w-12 bg-white rounded-xl shadow-sm flex items-center justify-center <%= field == 'bio' ? 'text-sky-500' : (field == 'skills' ? 'text-blue-500' : 'text-indigo-500') %> ml-4">
+        <%= heroicon (field == 'bio' ? 'user' : (field == 'skills' ? 'bolt' : 'link')), variant: :solid, options: { class: "h-6 w-6" } %>
+      </div>
+    </div>
+  </div>
+<% end %>

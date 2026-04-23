@@ -1,6 +1,6 @@
 <%# app/views/pricing/index.html.erb %>
 
-<div class="min-h-screen bg-slate-50">
+<div class="min-h-screen bg-slate-50" data-controller="dialog contact-dialog">
   <!-- 顶部导航栏 -->
   <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -10,11 +10,11 @@
         </div>
         <div class="flex flex-col">
           <span class="text-sm font-bold text-slate-800 leading-tight">AI 领航</span>
-          <span class="text-[8px] text-sky-500 font-bold tracking-widest uppercase">实战圈子</span>
+          <span class="text-[8px] text-sky-600 font-bold tracking-widest uppercase">实战圈子</span>
         </div>
       <% end %>
       <div class="flex items-center gap-4">
-        <%= link_to "返回首页", root_path, class: "text-sm text-slate-500 hover:text-sky-600 font-medium transition-colors" %>
+        <%= link_to "返回首页", root_path, class: "text-sm text-slate-500 hover:text-sky-600 font-medium transition-colors btn-darken" %>
         <% if user_signed_in? %>
           <div class="flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full border border-slate-200">
             <div class="h-6 w-6 bg-sky-500 rounded-full flex items-center justify-center text-[10px] text-white font-bold"><%= current_user.username[0].upcase %></div>
@@ -67,8 +67,8 @@
         </div>
         <h3 class="text-xl font-black text-slate-800 mb-6 text-center">年度会员</h3>
         <div class="flex items-baseline justify-center gap-1 mb-8">
-          <span class="text-2xl font-bold text-sky-600">¥</span>
-          <span class="text-5xl font-black text-sky-600">188</span>
+          <span class="text-2xl font-bold text-sky-700">¥</span>
+          <span class="text-5xl font-black text-sky-700">188</span>
           <span class="text-slate-400 text-sm font-bold">/ 年</span>
         </div>
         <ul class="space-y-4 mb-10 flex-1">
@@ -79,7 +79,7 @@
             </li>
           <% end %>
         </ul>
-        <button data-action="click->contact-dialog#open" class="w-full py-4 bg-gradient-to-r from-sky-500 to-sky-700 text-white rounded-2xl font-black text-sm shadow-xl shadow-sky-200 hover:brightness-110 transition-all active:scale-95">立即开通</button>
+        <button data-action="click->contact-dialog#open" class="w-full py-4 bg-gradient-to-r from-sky-500 to-sky-700 text-white rounded-2xl font-black text-sm shadow-xl shadow-sky-200 transition-all active:scale-95">立即开通</button>
       </div>
 
       <!-- 永久会员 -->
@@ -129,8 +129,8 @@
           <tr class="bg-slate-50 border-b border-slate-100">
             <th class="p-6 text-sm font-black text-slate-800">权益功能</th>
             <th class="p-6 text-center text-sm font-black text-slate-400">免费用户</th>
-            <th class="p-6 text-center text-sm font-black text-sky-400">月度会员</th>
-            <th class="p-6 text-center text-sm font-black text-sky-600">年度/永久</th>
+            <th class="p-6 text-center text-sm font-black text-sky-600">月度会员</th>
+            <th class="p-6 text-center text-sm font-black text-sky-700">年度/永久</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-50">
@@ -161,39 +161,6 @@
     </div>
   </section>
 
-  <!-- 联系客服弹窗 (Stimulus Component Dialog) -->
-  <dialog data-controller="contact-dialog" data-contact-dialog-target="dialog" class="m-auto backdrop:bg-slate-900/50 backdrop:backdrop-blur-sm p-0 rounded-[2.5rem] shadow-2xl border-none animate-in fade-in zoom-in duration-300 overflow-hidden">
-    <div class="w-full max-w-[400px] bg-white overflow-hidden">
-      <div class="relative p-8 text-center">
-        <button data-action="click->contact-dialog#close" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-all">
-          <%= heroicon "x-mark", variant: :solid, options: { class: "h-5 w-5" } %>
-        </button>
-
-        <div class="mb-6 mt-4">
-          <div class="h-16 w-16 bg-sky-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <%= heroicon "chat-bubble-left-right", variant: :solid, options: { class: "h-8 w-8 text-sky-500" } %>
-          </div>
-          <h3 class="text-xl font-black text-slate-800">联系客服开通</h3>
-          <p class="text-slate-400 text-xs mt-2 font-medium">请扫描下方二维码，添加客服微信开通会员</p>
-        </div>
-
-        <div class="bg-slate-50 p-6 rounded-3xl mb-6 flex justify-center">
-          <div class="h-48 w-48 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
-             <%= image_tag asset_path('qr_code.png'), class: "h-full w-full object-contain" %>
-          </div>
-        </div>
-
-        <div class="space-y-3">
-          <div class="flex items-center justify-center gap-2 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
-            <span class="h-1 w-1 bg-sky-400 rounded-full"></span>
-            <span>人工审核 · 即时开通</span>
-            <span class="h-1 w-1 bg-sky-400 rounded-full"></span>
-          </div>
-          <button data-action="click->contact-dialog#close" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm hover:bg-slate-800 transition-colors">
-            我知道了
-          </button>
-        </div>
-      </div>
-    </div>
-  </dialog>
+  <%= render "shared/auth_dialog" %>
+  <%= render "shared/contact_dialog" %>
 </div>

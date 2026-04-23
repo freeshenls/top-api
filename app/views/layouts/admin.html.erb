@@ -11,9 +11,9 @@
   </head>
 
   <body class="bg-slate-50 font-sans antialiased text-slate-900">
-    <div class="min-h-screen flex">
-      <!-- 侧边栏 -->
-      <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col sticky top-0 h-screen">
+    <div class="min-h-screen flex" data-controller="mobile-menu">
+      <!-- 侧边栏 (Desktop) -->
+      <aside class="hidden lg:flex w-64 bg-slate-900 text-slate-300 flex flex-col sticky top-0 h-screen">
         <div class="p-6 flex items-center gap-3 border-b border-slate-800">
           <div class="h-8 w-8 bg-gradient-to-br from-[#0EA5E9] to-[#0369A1] rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
             <%= image_tag asset_path('logo.svg'), class: "h-5 w-5 brightness-0 invert", alt: "Logo" %>
@@ -21,48 +21,7 @@
           <span class="font-bold text-white tracking-tight">AI 领航</span>
         </div>
 
-        <nav class="flex-1 p-4 space-y-1">
-          <%= link_to admin_root_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'dashboard' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
-            <%= heroicon "chart-pie", variant: :outline, options: { class: "h-5 w-5" } %>
-            <span class="text-sm font-medium">概览仪表盘</span>
-          <% end %>
-
-          <%= link_to admin_users_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'users' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
-            <%= heroicon "users", variant: :outline, options: { class: "h-5 w-5" } %>
-            <span class="text-sm font-medium">用户管理</span>
-          <% end %>
-
-          <div class="h-px bg-slate-800 my-4 mx-2"></div>
-          <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">内容管理</p>
-
-          <%= link_to admin_carousel_items_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'carousel_items' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
-            <%= heroicon "photo", variant: :outline, options: { class: "h-5 w-5" } %>
-            <span class="text-sm font-medium">首页轮播</span>
-          <% end %>
-
-          <%= link_to admin_posts_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'posts' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
-            <%= heroicon "megaphone", variant: :outline, options: { class: "h-5 w-5" } %>
-            <span class="text-sm font-medium">最新动态</span>
-          <% end %>
-
-          <%= link_to admin_activities_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'activities' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
-            <%= heroicon "calendar-days", variant: :outline, options: { class: "h-5 w-5" } %>
-            <span class="text-sm font-medium">线下活动</span>
-          <% end %>
-
-          <div class="h-px bg-slate-800 my-4 mx-2"></div>
-          <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">导航系统管理</p>
-
-          <%= link_to admin_categories_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'categories' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
-            <%= heroicon "squares-2x2", variant: :outline, options: { class: "h-5 w-5" } %>
-            <span class="text-sm font-medium">导航分类管理</span>
-          <% end %>
-
-          <%= link_to admin_sites_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'sites' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'}" do %>
-            <%= heroicon "globe-alt", variant: :outline, options: { class: "h-5 w-5" } %>
-            <span class="text-sm font-medium">导航站点管理</span>
-          <% end %>
-        </nav>
+        <%= render 'admin/shared/navigation' %>
 
         <div class="p-4 border-t border-slate-800">
           <%= link_to root_path, class: "flex items-center gap-3 px-4 py-2 text-xs font-medium text-slate-500 hover:text-white transition-colors" do %>
@@ -72,29 +31,61 @@
         </div>
       </aside>
 
+      <!-- 移动端抽屉式菜单 (Mobile Menu Drawer) -->
+      <div data-mobile-menu-target="menu" class="hidden fixed inset-0 z-[100] lg:hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" data-action="click->mobile-menu#hide"></div>
+        <div class="absolute inset-y-0 left-0 w-72 bg-slate-900 shadow-2xl flex flex-col animate-in slide-in-from-left duration-300">
+          <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="h-8 w-8 bg-gradient-to-br from-[#0EA5E9] to-[#0369A1] rounded-lg flex items-center justify-center">
+                <%= image_tag asset_path('logo.svg'), class: "h-5 w-5 brightness-0 invert" %>
+              </div>
+              <span class="font-bold text-white tracking-tight">管理菜单</span>
+            </div>
+            <button data-action="click->mobile-menu#hide" class="p-2 text-slate-400 hover:text-white transition-colors">
+              <%= heroicon "x-mark", variant: :outline, options: { class: "h-6 w-6" } %>
+            </button>
+          </div>
+          <div class="flex-1 overflow-y-auto">
+            <%= render 'admin/shared/navigation', is_mobile: true %>
+          </div>
+          <div class="p-6 border-t border-slate-800">
+            <%= link_to root_path, class: "flex items-center gap-3 px-4 py-2 text-sm font-medium text-slate-400 hover:text-white transition-colors" do %>
+              <%= heroicon "arrow-left-start-on-rectangle", variant: :outline, options: { class: "h-5 w-5" } %>
+              返回前台
+            <% end %>
+          </div>
+        </div>
+      </div>
+
       <!-- 主体内容 -->
       <main class="flex-1 flex flex-col min-w-0">
         <!-- 顶部通栏 -->
-        <header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
-          <% 
-            controller_titles = {
-              'dashboard' => '概览仪表盘',
-              'users' => '用户管理',
-              'carousel_items' => '首页轮播',
-              'posts' => '最新动态',
-              'activities' => '线下活动',
-              'categories' => '分类管理',
-              'sites' => '站点管理'
-            }
-          %>
-          <h2 class="text-sm font-bold text-slate-500 uppercase tracking-widest"><%= controller_titles[controller_name] || controller_name.humanize %></h2>
+        <header class="h-16 bg-white border-b border-slate-200 px-4 md:px-8 flex items-center justify-between">
           <div class="flex items-center gap-4">
-             <span class="text-xs font-bold text-slate-400">当前管理员: <%= current_user.username %></span>
+            <button data-action="click->mobile-menu#toggle" class="lg:hidden p-2 -ml-2 text-slate-500 hover:text-sky-600 transition-colors">
+              <%= heroicon "bars-3-bottom-left", variant: :outline, options: { class: "h-6 w-6" } %>
+            </button>
+            <% 
+              controller_titles = {
+                'dashboard' => '概览仪表盘',
+                'users' => '用户管理',
+                'carousel_items' => '首页轮播',
+                'posts' => '最新动态',
+                'activities' => '线下活动',
+                'categories' => '分类管理',
+                'sites' => '站点管理'
+              }
+            %>
+            <h2 class="text-sm font-bold text-slate-500 uppercase tracking-widest"><%= controller_titles[controller_name] || controller_name.humanize %></h2>
+          </div>
+          <div class="flex items-center gap-4">
+             <span class="hidden sm:inline text-xs font-bold text-slate-400">当前管理员: <%= current_user.username %></span>
           </div>
         </header>
 
         <!-- 页面内容 -->
-        <div class="p-8 relative">
+        <div class="p-4 md:p-8 relative flex-1 overflow-y-auto">
           <% if notice %>
             <div data-controller="notification"
                  data-notification-delay-value="3000"

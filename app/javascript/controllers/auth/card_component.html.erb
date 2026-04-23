@@ -3,6 +3,14 @@
        data-controller="auth--card-component"
        data-auth--card-component-index-value="<%= active_index %>">
     
+    <div class="text-center mb-8">
+      <div class="h-16 w-16 bg-gradient-to-br from-[#0EA5E9] to-[#0369A1] rounded-2xl flex items-center justify-center shadow-lg shadow-sky-200 mx-auto mb-6">
+        <%= helpers.image_tag helpers.asset_path('logo.svg'), class: "h-10 w-10 brightness-0 invert", alt: "Logo" %>
+      </div>
+      <h2 class="text-2xl font-black text-slate-800 leading-tight">欢迎回到 AI 领航</h2>
+      <p class="text-sm text-slate-500 mt-2 font-medium">实战派 AI 导航，助力您的创作与工作</p>
+    </div>
+
     <div class="py-2 px-1">
       <div class="flex p-1.5 bg-gray-100 rounded-2xl mb-8">
         <button data-auth--card-component-target="tab" 
@@ -89,6 +97,11 @@
           <%= render Form::ButtonComponent.new(form: f, text: "立即加入") %>
         <% end %>
       </div>
+    </div>
+    <div class="mt-8 pt-8 border-t border-slate-100 text-center">
+      <p class="text-[11px] text-slate-400 leading-relaxed uppercase tracking-widest font-bold">
+        登录即表示您同意我们的 <%= helpers.link_to "服务协议", helpers.terms_path, class: "text-sky-500 hover:underline", data: { turbo: false } %> 和 <%= helpers.link_to "隐私政策", helpers.privacy_path, class: "text-sky-500 hover:underline", data: { turbo: false } %>
+      </p>
     </div>
   </div>
 <% end %>

@@ -1,8 +1,8 @@
 <%# app/views/home/index.html.erb %>
 
-<div class="min-h-screen bg-[#F8FAFC] flex" data-controller="smooth-scroll search">
+<div class="min-h-screen bg-[#F8FAFC] flex" data-controller="smooth-scroll search mobile-menu">
 
-  <!-- 1. 左侧侧边栏 (保持不变) -->
+  <!-- 1. 左侧侧边栏 -->
   <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-slate-200 sticky top-0 h-screen overflow-y-auto custom-scrollbar">
     <div class="p-6">
       <div class="flex items-center gap-3 mb-8">
@@ -14,43 +14,7 @@
           <span class="text-[10px] text-sky-500 font-bold tracking-widest uppercase">实战圈子</span>
         </div>
       </div>
-      <nav class="space-y-1 -mx-6">
-        <% @all_categories.each do |category| %>
-          <div data-controller="menu" class="group/menu">
-            <div class="group">
-              <a href="#<%= category.term_id.presence || "category_#{category.id}" %>" 
-                 class="flex items-center justify-between px-6 py-3 text-slate-600 hover:bg-sky-50 hover:text-[#0369A1] transition-all"
-                 data-action="click->smooth-scroll#scrollTo <%= 'click->menu#toggle' if category.children.any? %>">
-                <div class="flex items-center gap-3">
-                  <%= heroicon category.icon.presence || "squares-2x2", variant: :outline, options: { class: "h-5 w-5 text-slate-400 group-hover:text-sky-500" } %>
-                  <span class="font-medium text-sm text-slate-700"><%= category.name %></span>
-                </div>
-                
-                <% if category.children.any? %>
-                  <div class="text-slate-300 group-hover:text-sky-500 transition-all">
-                    <%= heroicon "chevron-right", variant: :mini, options: { 
-                      class: "h-4 w-4 transition-transform duration-200",
-                      "data-menu-target": "icon"
-                    } %>
-                  </div>
-                <% end %>
-              </a>
-            </div>
-            
-            <% if category.children.any? %>
-              <div class="hidden bg-slate-50/50 py-1 transition-all" data-menu-target="content">
-                <% category.children.each do |child| %>
-                  <a href="#<%= child.term_id.presence || "category_#{child.id}" %>" 
-                     class="flex items-center gap-3 pl-14 pr-6 py-2 text-xs text-slate-500 hover:text-sky-600 hover:bg-sky-100/50 transition-all"
-                     data-action="click->smooth-scroll#scrollTo">
-                    <span><%= child.name %></span>
-                  </a>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
-      </nav>
+      <%= render 'navigation', categories: @all_categories %>
     </div>
 <truncated 10 lines>
     <div class="mt-auto p-4 m-4 bg-sky-50 rounded-2xl border border-sky-100">
@@ -61,7 +25,7 @@
       <p class="text-[11px] text-sky-700 leading-relaxed mb-3">
         尊享 1000+ AI 教程、行业大咖分享课程。
       </p>
-      <%= link_to "立即开通", pricing_path, class: "block text-center py-2 bg-[#0EA5E9] text-white text-[11px] font-bold rounded-lg shadow-md shadow-sky-200 hover:bg-[#0369A1] transition-colors mb-3" %>
+      <%= link_to "立即开通", pricing_path, class: "block text-center py-2 bg-[#0EA5E9] text-white text-[11px] font-bold rounded-lg shadow-md shadow-sky-200 hover:bg-[#0369A1] transition-colors mb-3 btn-darken" %>
       
       <div data-controller="contact-dialog">
         <button data-action="click->contact-dialog#open" class="w-full flex items-center justify-center gap-2 py-2 border border-sky-200 text-sky-600 text-[10px] font-bold rounded-lg hover:bg-sky-100 transition-colors cursor-pointer">
@@ -73,18 +37,50 @@
     </div>
   </aside>
 
+  <!-- 移动端抽屉式菜单 (Mobile Menu Drawer) -->
+  <div data-mobile-menu-target="menu" class="hidden fixed inset-0 z-[100] lg:hidden">
+    <!-- 背景遮罩 -->
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" data-action="click->mobile-menu#hide"></div>
+    
+    <!-- 菜单内容 -->
+    <div class="absolute inset-y-0 left-0 w-72 bg-white shadow-2xl flex flex-col animate-in slide-in-from-left duration-300">
+      <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="h-8 w-8 bg-gradient-to-br from-[#0EA5E9] to-[#0369A1] rounded-lg flex items-center justify-center">
+            <%= image_tag asset_path('logo.svg'), class: "h-5 w-5 brightness-0 invert" %>
+          </div>
+          <span class="font-bold text-slate-800">导航菜单</span>
+        </div>
+        <button data-action="click->mobile-menu#hide" class="p-2 text-slate-400 hover:text-red-500 transition-colors">
+          <%= heroicon "x-mark", variant: :outline, options: { class: "h-6 w-6" } %>
+        </button>
+      </div>
+      <div class="flex-1 overflow-y-auto p-6 custom-scrollbar">
+        <%= render 'navigation', categories: @all_categories, is_mobile: true %>
+      </div>
+      <div class="p-6 border-t border-slate-100 bg-slate-50">
+        <%= link_to pricing_path, class: "flex items-center justify-center gap-2 w-full py-3 bg-[#0EA5E9] text-white text-sm font-bold rounded-xl shadow-lg shadow-sky-100 btn-darken" do %>
+          <%= heroicon "sparkles", variant: :solid, options: { class: "h-4 w-4" } %>
+          <span>升级会员</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
   <!-- 2. 主体区域 -->
   <main class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto scroll-smooth" data-smooth-scroll-target="scrollContainer">
     <!-- 顶部 Header -->
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-slate-100 px-4 lg:px-8 py-4 flex items-center justify-between gap-4">
-      <!-- 移动端 Logo (仅在侧边栏隐藏时显示) -->
-      <div class="flex items-center gap-3 lg:hidden flex-shrink-0">
-        <div class="h-9 w-9 bg-gradient-to-br from-[#0EA5E9] to-[#0369A1] rounded-xl flex items-center justify-center shadow-lg shadow-sky-200">
-          <%= image_tag asset_path('logo.svg'), class: "h-5 w-5 brightness-0 invert", alt: "Logo" %>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-sm font-bold text-slate-800 leading-tight">AI 领航</span>
-          <span class="text-[8px] text-sky-500 font-bold tracking-widest uppercase">实战圈子</span>
+      <!-- 移动端汉堡菜单和 Logo -->
+      <div class="flex items-center gap-3 lg:hidden">
+        <button data-action="click->mobile-menu#toggle" class="p-2 -ml-2 text-slate-500 hover:text-sky-600 transition-colors">
+          <%= heroicon "bars-3-bottom-left", variant: :outline, options: { class: "h-6 w-6" } %>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="h-8 w-8 bg-gradient-to-br from-[#0EA5E9] to-[#0369A1] rounded-lg flex items-center justify-center shadow-lg shadow-sky-200">
+            <%= image_tag asset_path('logo.svg'), class: "h-4 w-4 brightness-0 invert", alt: "Logo" %>
+          </div>
+          <span class="text-sm font-black text-slate-800">AI 领航</span>
         </div>
       </div>
 
@@ -103,7 +99,7 @@
 
       <div class="flex items-center gap-4 ml-6">
         <% unless current_user&.is_vip %>
-          <%= link_to pricing_path, class: "hidden sm:flex items-center gap-2 px-4 py-2 bg-[#0EA5E9] text-white text-xs font-bold rounded-xl shadow-lg shadow-sky-200 hover:bg-[#0369A1] transition-all" do %>
+          <%= link_to pricing_path, class: "hidden sm:flex items-center gap-2 px-4 py-2 bg-[#0EA5E9] text-white text-xs font-bold rounded-xl shadow-lg shadow-sky-200 hover:bg-[#0369A1] transition-all btn-darken" do %>
             <%= heroicon "sparkles", variant: :solid, options: { class: "h-3.5 w-3.5" } %>
             <span>开通会员</span>
           <% end %>
@@ -143,7 +139,9 @@
                     <span>个人中心</span>
                   <% end %>
 
-                  <%# 2. 修改密码 %>
+
+
+                  <%# 3. 修改密码 %>
                   <%= link_to edit_user_registration_path, 
                       class: "flex items-center gap-3 px-5 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-sky-600 transition-colors group",
                       data: { action: "click->dialog#open", turbo_frame: "auth_frame" } do %>
@@ -172,9 +170,9 @@
           <% else %>
             <div class="flex items-center">
               <%= link_to new_user_session_path, 
-                  class: "flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-slate-700 to-slate-900 text-white text-sm font-bold rounded-2xl shadow-lg shadow-slate-200 transition-all hover:scale-105 active:scale-95",
+                  class: "flex items-center gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 bg-gradient-to-r from-slate-700 to-slate-900 text-white text-[11px] sm:text-sm font-bold rounded-xl sm:rounded-2xl shadow-lg shadow-slate-200 transition-all hover:scale-105 active:scale-95 whitespace-nowrap btn-darken",
                   data: { action: "click->dialog#open", turbo_frame: "auth_frame" } do %>
-                <%= heroicon "user-circle", variant: :solid, options: { class: "h-4 w-4 text-sky-400" } %>
+                <%= heroicon "user-circle", variant: :solid, options: { class: "h-4 w-4 text-sky-400 flex-shrink-0" } %>
                 <span>登录 / 注册</span>
               <% end %>
             </div>
@@ -213,14 +211,14 @@
               <% end %>
             </div>
             <div class="swiper-pagination !bottom-6"></div>
-            <div class="swiper-button-prev !text-white/30 hover:!text-white after:!text-xl !left-6"></div>
-            <div class="swiper-button-next !text-white/30 hover:!text-white after:!text-xl !right-6"></div>
+            <div class="swiper-button-prev !text-white/30 hover:!text-white after:!text-xl !left-6 cursor-pointer"></div>
+            <div class="swiper-button-next !text-white/30 hover:!text-white after:!text-xl !right-6 cursor-pointer"></div>
           </div>
         </div>
 
         <div class="flex flex-col gap-6 text-white font-bold lg:h-96">
           <!-- 近期活动 -->
-          <div class="flex-1 bg-gradient-to-br from-sky-400 to-sky-600 rounded-[2.5rem] p-6 shadow-lg relative overflow-hidden group" data-search-target="category">
+          <div class="flex-1 bg-gradient-to-br from-sky-700 to-slate-900 rounded-[2.5rem] p-6 shadow-lg relative overflow-hidden group" data-search-target="category">
             <div class="relative z-10 flex flex-col h-full">
               <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg">近期活动</h3>
@@ -237,8 +235,8 @@
           <div class="flex-1 bg-slate-900 rounded-[2.5rem] p-6 shadow-lg relative overflow-hidden group border border-slate-800" data-search-target="category">
             <div class="relative z-10 flex flex-col h-full">
               <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg text-sky-400">最新动态</h3>
-                <%= heroicon "megaphone", variant: :solid, options: { class: "h-5 w-5 text-sky-500/50" } %>
+                <h3 class="text-lg text-sky-500">最新动态</h3>
+                <%= heroicon "megaphone", variant: :solid, options: { class: "h-5 w-5 text-sky-600/50" } %>
               </div>
               <div id="home_posts_list" class="space-y-3 overflow-y-auto custom-scrollbar pr-2 flex-1">
                 <%= render partial: "post_item", collection: @latest_posts, as: :post %>
@@ -271,8 +269,8 @@
 
 
 
-      <section id="members" class="scroll-mt-24 bg-slate-900 rounded-[3rem] p-10 text-white relative" data-search-target="category">
-        <h3 class="text-2xl font-black mb-10 border-l-4 border-sky-500 pl-4 tracking-wider">会员展示</h3>
+      <section id="members" class="scroll-mt-24 bg-slate-950 rounded-[3rem] p-10 text-white relative" data-search-target="category">
+        <h3 class="text-2xl font-black mb-10 border-l-4 border-sky-600 pl-4 tracking-wider">会员展示</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <% @featured_members.each do |m| %>
             <%= link_to member_path(m.id || 1), 
@@ -291,7 +289,7 @@
                 </div>
                 <div class="space-y-2 border-t border-white/5 pt-3 mt-3">
                   <p class="text-[11px] text-slate-300 line-clamp-2 min-h-[32px] italic"><%= m.bio.presence || "AI 实践者" %></p>
-                  <p class="text-[10px] text-sky-500 font-bold">查看详情 &rarr;</p>
+                  <p class="text-[10px] text-sky-600 font-bold">查看详情 &rarr;</p>
                 </div>
               </div>
             <% end %>

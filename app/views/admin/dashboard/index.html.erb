@@ -1,32 +1,64 @@
 <%# app/views/admin/dashboard/index.html.erb %>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-  <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 group">
-    <div class="h-12 w-12 bg-sky-50 rounded-2xl flex items-center justify-center text-sky-600 mb-4 group-hover:bg-sky-600 group-hover:text-white transition-all">
-      <%= heroicon "users", variant: :outline, options: { class: "h-6 w-6" } %>
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
+  <!-- 1. 总注册用户 -->
+  <div class="bg-white p-5 md:p-8 rounded-3xl shadow-sm border border-slate-100 group">
+    <div class="h-10 w-10 md:h-12 md:w-12 bg-sky-50 rounded-2xl flex items-center justify-center text-sky-600 mb-3 md:mb-4 group-hover:bg-sky-600 group-hover:text-white transition-all">
+      <%= heroicon "users", variant: :outline, options: { class: "h-5 w-5 md:h-6 md:w-6" } %>
     </div>
-    <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">总注册用户</p>
-    <p class="text-3xl font-black text-slate-800"><%= @stats[:total_users] %></p>
+    <p class="text-slate-400 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1">总注册用户</p>
+    <p class="text-2xl md:text-3xl font-black text-slate-800"><%= @stats[:total_users] %></p>
   </div>
 
-  <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 group">
-    <div class="h-12 w-12 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 mb-4 group-hover:bg-amber-500 group-hover:text-white transition-all">
-      <%= heroicon "sparkles", variant: :outline, options: { class: "h-6 w-6" } %>
+  <!-- 2. VIP 会员数 -->
+  <div class="bg-white p-5 md:p-8 rounded-3xl shadow-sm border border-slate-100 group">
+    <div class="h-10 w-10 md:h-12 md:w-12 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 mb-3 md:mb-4 group-hover:bg-amber-500 group-hover:text-white transition-all">
+      <%= heroicon "sparkles", variant: :outline, options: { class: "h-5 w-5 md:h-6 md:w-6" } %>
     </div>
-    <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">VIP 会员数</p>
-    <p class="text-3xl font-black text-slate-800"><%= @stats[:vip_users] %></p>
+    <p class="text-slate-400 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1">VIP 会员数</p>
+    <p class="text-2xl md:text-3xl font-black text-slate-800"><%= @stats[:vip_users] %></p>
   </div>
 
-  <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 group">
-    <div class="h-12 w-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 mb-4 group-hover:bg-emerald-500 group-hover:text-white transition-all">
-      <%= heroicon "user-plus", variant: :outline, options: { class: "h-6 w-6" } %>
+  <!-- 3. 今日新增 -->
+  <div class="bg-white p-5 md:p-8 rounded-3xl shadow-sm border border-slate-100 group">
+    <div class="h-10 w-10 md:h-12 md:w-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 mb-3 md:mb-4 group-hover:bg-emerald-500 group-hover:text-white transition-all">
+      <%= heroicon "user-plus", variant: :outline, options: { class: "h-5 w-5 md:h-6 md:w-6" } %>
     </div>
-    <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">今日新增</p>
-    <p class="text-3xl font-black text-slate-800"><%= @stats[:new_users_today] %></p>
+    <p class="text-slate-400 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1">今日新增</p>
+    <p class="text-2xl md:text-3xl font-black text-slate-800"><%= @stats[:new_users_today] %></p>
+  </div>
+
+  <!-- 4. 站点总数 -->
+  <div class="bg-white p-5 md:p-8 rounded-3xl shadow-sm border border-slate-100 group">
+    <div class="h-10 w-10 md:h-12 md:w-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-3 md:mb-4 group-hover:bg-blue-600 group-hover:text-white transition-all">
+      <%= heroicon "globe-alt", variant: :outline, options: { class: "h-5 w-5 md:h-6 md:w-6" } %>
+    </div>
+    <p class="text-slate-400 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1">导航站点总数</p>
+    <p class="text-2xl md:text-3xl font-black text-slate-800"><%= @stats[:site_count] %></p>
+  </div>
+
+  <!-- 5. 分类总数 -->
+  <div class="bg-white p-5 md:p-8 rounded-3xl shadow-sm border border-slate-100 group">
+    <div class="h-10 w-10 md:h-12 md:w-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-3 md:mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+      <%= heroicon "squares-2x2", variant: :outline, options: { class: "h-5 w-5 md:h-6 md:w-6" } %>
+    </div>
+    <p class="text-slate-400 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1">分类管理数</p>
+    <p class="text-2xl md:text-3xl font-black text-slate-800"><%= @stats[:category_count] %></p>
+  </div>
+
+  <!-- 6. 动态总数 -->
+  <div class="bg-white p-5 md:p-8 rounded-3xl shadow-sm border border-slate-100 group">
+    <div class="h-10 w-10 md:h-12 md:w-12 bg-violet-50 rounded-2xl flex items-center justify-center text-violet-600 mb-3 md:mb-4 group-hover:bg-violet-600 group-hover:text-white transition-all">
+      <%= heroicon "megaphone", variant: :outline, options: { class: "h-5 w-5 md:h-6 md:w-6" } %>
+    </div>
+    <p class="text-slate-400 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1">动态发布数</p>
+    <p class="text-2xl md:text-3xl font-black text-slate-800"><%= @stats[:post_count] %></p>
   </div>
 </div>
 
-<div class="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-sm">
-  <h3 class="text-xl font-black text-slate-800 mb-6 tracking-tight text-center">欢迎回到管理后台</h3>
-  <p class="text-slate-400 text-center text-sm">在这里您可以管理您的 AI 领航社区会员数据、监控系统状态以及手动调整用户权益。</p>
+<div class="bg-white rounded-[2.5rem] p-6 md:p-10 border border-slate-100 shadow-sm">
+  <h3 class="text-lg md:text-xl font-black text-slate-800 mb-4 md:mb-6 tracking-tight text-center">系统管理概览</h3>
+  <p class="text-slate-400 text-center text-xs md:text-sm leading-relaxed">
+    欢迎回来，当前系统运行平稳。您可以快速通过上方数据了解社区活跃度，或通过侧边栏进行更深入的内容管理与用户权限调整。
+  </p>
 </div>

@@ -1,0 +1,60 @@
+<%# app/views/activities/show.html.erb %>
+
+<div class="min-h-screen bg-slate-50 py-12 px-4">
+  <div class="max-w-3xl mx-auto">
+    <!-- 返回按钮 -->
+    <%= link_to root_path, class: "inline-flex items-center gap-2 text-slate-400 hover:text-sky-600 transition-colors mb-8 group" do %>
+      <div class="h-8 w-8 bg-white rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-all">
+        <%= heroicon "arrow-left", variant: :solid, options: { class: "h-4 w-4" } %>
+      </div>
+      <span class="text-sm font-bold">返回首页</span>
+    <% end %>
+
+    <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100">
+      <!-- 活动 Header 背景 -->
+      <div class="h-48 bg-gradient-to-br from-sky-700 to-slate-900 p-8 md:p-12 flex flex-col justify-end relative overflow-hidden">
+        <div class="relative z-10">
+          <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md text-white rounded-full text-[10px] font-black uppercase tracking-widest border border-white/20 mb-4">
+             线下交流 · 实战分享
+          </span>
+          <h1 class="text-2xl md:text-3xl font-black text-white leading-tight">
+            <%= @activity.title %>
+          </h1>
+        </div>
+        <%= heroicon "sparkles", variant: :solid, options: { class: "absolute -bottom-6 -right-6 h-48 w-48 text-white/10" } %>
+      </div>
+
+      <div class="p-8 md:p-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <div class="flex items-center gap-4 p-5 bg-slate-50 rounded-2xl border border-slate-100">
+            <div class="h-12 w-12 bg-white rounded-xl flex items-center justify-center text-sky-500 shadow-sm">
+              <%= heroicon "calendar-days", variant: :solid, options: { class: "h-6 w-6" } %>
+            </div>
+            <div>
+              <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">活动日期</p>
+              <p class="text-sm font-black text-slate-800"><%= @activity.event_date.strftime("%Y年%m月%d日") %></p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 p-5 bg-slate-50 rounded-2xl border border-slate-100">
+            <div class="h-12 w-12 bg-white rounded-xl flex items-center justify-center text-amber-500 shadow-sm">
+              <%= heroicon "map-pin", variant: :solid, options: { class: "h-6 w-6" } %>
+            </div>
+            <div>
+              <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">活动地点</p>
+              <p class="text-sm font-black text-slate-800"><%= @activity.location %></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="prose prose-slate max-w-none">
+          <h3 class="text-xl font-black text-slate-800 mb-6">活动详情</h3>
+          <div class="text-slate-600 leading-relaxed text-lg whitespace-pre-wrap font-medium">
+            <%= @activity.description %>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

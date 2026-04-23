@@ -28,3 +28,32 @@
 .amap-sug-result .auto-item:hover {
   background-color: #f0f9ff !important;
 }
+
+/* Global Pointer Cursor */
+button, 
+a, 
+input[type="submit"], 
+input[type="button"],
+input[type="file"],
+[role="button"],
+.cursor-pointer {
+  cursor: pointer !important;
+  transition: all 0.2s ease-out !important;
+}
+
+/* Hover Darken - Only for Buttons and specific small links */
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+.btn-darken:hover {
+  filter: brightness(0.9) !important;
+}
+
+/* Text links should use color shift rather than brightness filter usually, 
+   but for now we focus on actual buttons as requested */
+button:active, 
+input[type="submit"]:active,
+.btn-darken:active {
+  filter: brightness(0.8) !important;
+  transform: scale(0.98) !important;
+}

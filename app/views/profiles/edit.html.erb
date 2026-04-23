@@ -1,0 +1,31 @@
+<% frame_id = case @field
+   when 'bio' then "profile_bio"
+   when 'skills' then "profile_skills"
+   when 'expectations' then "profile_expectations"
+   else "auth_frame"
+end %>
+
+<%= turbo_frame_tag frame_id do %>
+  <div class="bg-white rounded-2xl p-6 border-2 border-sky-500 shadow-xl shadow-sky-500/10 animate-in fade-in zoom-in duration-300">
+    <%= form_with(model: @user, url: profile_path, method: :patch, class: "space-y-4") do |f| %>
+      <%= hidden_field_tag :field, @field %>
+      
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <%= f.label @field, case @field
+             when 'bio' then "关于我"
+             when 'skills' then "能提供"
+             when 'expectations' then "期望链接"
+          end, class: "block text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1" %>
+        </div>
+
+        <%= f.text_area @field, class: "w-full bg-slate-50 border-none rounded-2xl py-4 px-5 text-sm focus:ring-2 focus:ring-sky-500/20 transition-all min-h-[120px]", placeholder: "请输入内容..." %>
+      </div>
+
+      <div class="flex items-center gap-3 pt-2">
+        <%= f.submit "保存更改", class: "flex-1 bg-gradient-to-r from-[#0EA5E9] to-[#0369A1] text-white py-3 rounded-xl font-black text-sm shadow-lg shadow-sky-500/20 hover:brightness-110 active:scale-[0.98] transition-all cursor-pointer" %>
+        <%= link_to "取消", member_path(@user), class: "px-6 py-3 bg-slate-100 text-slate-500 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

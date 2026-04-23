@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "category", "item", "noResults"]
+  static targets = ["input", "category", "item", "noResults", "showMore"]
 
   perform() {
     const query = this.inputTarget.value.toLowerCase().trim()
@@ -20,6 +20,9 @@ export default class extends Controller {
         item.classList.add("hidden")
       }
     })
+
+    // Hide all show-more buttons during search
+    this.showMoreTargets.forEach(el => el.classList.add('hidden'))
 
     this.updateContainers()
   }
@@ -51,5 +54,8 @@ export default class extends Controller {
     this.itemTargets.forEach(item => item.classList.remove("hidden"))
     this.categoryTargets.forEach(category => category.classList.remove("hidden"))
     this.noResultsTarget.classList.add("hidden")
+    
+    // Restore all show-more buttons
+    this.showMoreTargets.forEach(el => el.classList.remove('hidden'))
   }
 }

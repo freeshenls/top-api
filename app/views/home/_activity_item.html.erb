@@ -1,6 +1,9 @@
-<div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 hover:bg-white/20 transition-all cursor-pointer snap-start"
-     data-search-target="item"
-     data-search-content="<%= [activity.title, activity.location].join(' ') %>">
+<%= link_to activity_path(activity), 
+    class: "block bg-white/10 backdrop-blur-md rounded-2xl p-4 hover:bg-white/20 transition-all cursor-pointer snap-start",
+    data: {
+      search_target: "item",
+      search_content: [activity.title, activity.location].join(' ')
+    } do %>
   <h4 class="text-sm mb-1 truncate font-bold text-white/90"><%= activity.title %></h4>
   <p class="text-[10px] text-white/60 truncate italic"><%= activity.event_date.strftime("%m月%d日") %> | <%= activity.location %></p>
-</div>
+<% end %>

@@ -1,0 +1,43 @@
+<%# app/views/admin/shared/_navigation.html.erb %>
+<nav class="flex-1 p-4 space-y-1">
+  <%= link_to admin_root_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'dashboard' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'} #{local_assigns[:is_mobile] ? 'text-slate-300' : ''}" do %>
+    <%= heroicon "chart-pie", variant: :outline, options: { class: "h-5 w-5" } %>
+    <span class="text-sm font-medium">概览仪表盘</span>
+  <% end %>
+
+  <%= link_to admin_users_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'users' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'} #{local_assigns[:is_mobile] ? 'text-slate-300' : ''}" do %>
+    <%= heroicon "users", variant: :outline, options: { class: "h-5 w-5" } %>
+    <span class="text-sm font-medium">用户管理</span>
+  <% end %>
+
+  <div class="h-px bg-slate-800 my-4 mx-2"></div>
+  <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">内容管理</p>
+
+  <%= link_to admin_carousel_items_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'carousel_items' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'} #{local_assigns[:is_mobile] ? 'text-slate-300' : ''}" do %>
+    <%= heroicon "photo", variant: :outline, options: { class: "h-5 w-5" } %>
+    <span class="text-sm font-medium">首页轮播</span>
+  <% end %>
+
+  <%= link_to admin_posts_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'posts' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'} #{local_assigns[:is_mobile] ? 'text-slate-300' : ''}" do %>
+    <%= heroicon "megaphone", variant: :outline, options: { class: "h-5 w-5" } %>
+    <span class="text-sm font-medium">最新动态</span>
+  <% end %>
+
+  <%= link_to admin_activities_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'activities' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'} #{local_assigns[:is_mobile] ? 'text-slate-300' : ''}" do %>
+    <%= heroicon "calendar-days", variant: :outline, options: { class: "h-5 w-5" } %>
+    <span class="text-sm font-medium">线下活动</span>
+  <% end %>
+
+  <div class="h-px bg-slate-800 my-4 mx-2"></div>
+  <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">导航系统管理</p>
+
+  <%= link_to admin_categories_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'categories' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'} #{local_assigns[:is_mobile] ? 'text-slate-300' : ''}" do %>
+    <%= heroicon "squares-2x2", variant: :outline, options: { class: "h-5 w-5" } %>
+    <span class="text-sm font-medium">导航分类管理</span>
+  <% end %>
+
+  <%= link_to admin_sites_path, class: "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all #{controller_name == 'sites' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'hover:bg-slate-800 hover:text-white'} #{local_assigns[:is_mobile] ? 'text-slate-300' : ''}" do %>
+    <%= heroicon "globe-alt", variant: :outline, options: { class: "h-5 w-5" } %>
+    <span class="text-sm font-medium">导航站点管理</span>
+  <% end %>
+</nav>

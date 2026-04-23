@@ -3,7 +3,7 @@
          data-search-target="category">
   <div class="flex items-center justify-between mb-8">
     <div class="flex items-center gap-3">
-      <div class="h-10 w-10 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center text-sky-500">
+      <div class="h-10 w-10 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center text-sky-600">
         <%= heroicon category.icon.presence || "squares-2x2", variant: :outline, options: { class: "h-5 w-5" } %>
       </div>
       <h3 class="text-xl font-black text-slate-800 tracking-tight"><%= category.name %></h3>
@@ -13,18 +13,18 @@
   <% if category.children.any? %>
     <div class="space-y-12">
       <% category.children.each do |child| %>
-        <div id="<%= child.term_id.presence || "category_#{child.id}" %>" class="scroll-mt-24">
-          <div class="flex items-center gap-2 mb-6 ml-1 subcategory-header" data-search-target="category">
-            <div class="h-1.5 w-1.5 rounded-full bg-sky-500"></div>
+        <div id="<%= child.term_id.presence || "category_#{child.id}" %>" class="scroll-mt-24" data-search-target="category">
+          <div class="flex items-center gap-2 mb-6 ml-1 subcategory-header">
+            <div class="h-1.5 w-1.5 rounded-full bg-sky-600"></div>
             <h4 class="text-sm font-bold text-slate-500 uppercase tracking-widest"><%= child.name %></h4>
           </div>
           <div data-controller="show-more" data-show-more-limit-value="15">
             <%= render 'sites_grid', sites: child.sites %>
             <% if child.sites.size > 15 %>
-                  <div class="mt-8 flex justify-center">
+                  <div class="mt-8 flex justify-center" data-search-target="showMore">
                     <button data-action="click->show-more#toggle" 
                             data-show-more-target="button"
-                            class="px-8 py-2.5 bg-white border border-slate-200 text-slate-500 text-xs font-bold rounded-xl hover:bg-sky-50 hover:text-sky-600 hover:border-sky-100 transition-all shadow-sm cursor-pointer">
+                            class="px-8 py-2.5 bg-white border border-slate-200 text-slate-500 text-xs font-bold rounded-xl hover:bg-sky-50 hover:text-sky-700 hover:border-sky-100 transition-all shadow-sm cursor-pointer">
                       查看全部 <%= child.sites.size %> 个站点
                     </button>
                   </div>
@@ -37,10 +37,10 @@
     <div data-controller="show-more" data-show-more-limit-value="15">
       <%= render 'sites_grid', sites: category.sites %>
       <% if category.sites.size > 15 %>
-        <div class="mt-8 flex justify-center">
+        <div class="mt-8 flex justify-center" data-search-target="showMore">
           <button data-action="click->show-more#toggle" 
                   data-show-more-target="button"
-                  class="px-8 py-2.5 bg-white border border-slate-200 text-slate-500 text-xs font-bold rounded-xl hover:bg-sky-50 hover:text-sky-600 hover:border-sky-100 transition-all shadow-sm">
+                  class="px-8 py-2.5 bg-white border border-slate-200 text-slate-500 text-xs font-bold rounded-xl hover:bg-sky-50 hover:text-sky-600 hover:border-sky-100 transition-all shadow-sm cursor-pointer">
             查看全部 <%= category.sites.size %> 个站点
           </button>
         </div>

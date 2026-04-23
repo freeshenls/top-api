@@ -37,6 +37,9 @@ Rails.application.routes.draw do
       get :card
     end
   end
+  resource :profile, only: [:edit, :update]
+  resources :posts, only: [:index, :show]
+  resources :activities, only: [:index, :show]
   get 'user_card', to: 'home#user_card'
 
   # Defines the root path route ("/")
